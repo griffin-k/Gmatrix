@@ -1,0 +1,52 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="{% static 'imgs/lgu-logo.png' %}" />
+
+    <title>error</title>
+
+    {% tailwind_css %}
+
+    <script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>
+  </head>
+  <body class="bg-white h-screen flex items-center justify-center">
+    <div class="text-center">
+      <div id="lottie-container" class="w-50 h-52 mx-auto mb-3"></div>
+      <p class="text-5xl font-extrabold text-gray-600">404</p>
+
+      <div class="text-center ">
+        <p class="text-2xl font-extrabold text-gray-600 mb-4">
+          Oops! That page can't be Found
+        </p>
+        <p class="text-gray-600 mb-8">
+          It seems like the page might be under construction or simply doesn't
+          exist.
+        </p>
+      </div>
+
+      <div class="flex justify-center">
+        <a
+          href="/"
+          class="inline-block px-6 py-3 text-white font-semibold bg-green-600 rounded-full hover:bg-gray-600 transition duration-300 ease-in-out transform hover:scale-105"
+        >
+          Back to Home
+        </a>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.10/lottie.min.js"></script>
+
+    <script>
+      const animation = lottie.loadAnimation({
+        container: document.getElementById("lottie-container"),
+        renderer: "svg",
+        loop: true,
+        autoplay: true,
+        path: "404.json",
+      });
+    </script>
+  </body>
+</html>

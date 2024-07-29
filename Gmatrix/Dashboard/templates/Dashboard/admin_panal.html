@@ -1,0 +1,307 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="icon" href="{% static 'imgs/lgu-logo.png' %}" />
+  <title>Dashboard | LMS</title>
+  {% tailwind_css %}
+  <script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>
+  <!--CDN FOR CHARTS-->
+  <link href="{% static 'google-fonts/fonts.css' %}" rel="stylesheet" />
+  <link href="{% static 'tailwind/tailwind.1.0.min.css' %}" rel="stylesheet" />
+  <script src="{% static 'js/alpine.min.js' %}" defer></script>
+  <script src="{% static 'js/chart.js' %}"></script>
+
+  <style>
+    /* uba - CSS for Chart js*/
+    canvas {
+      max-width: 800px;
+      margin: 20px;
+    }
+    .rounded-table {
+      border-collapse: collapse;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    
+    
+  </style>
+</head>
+
+<body class="flex bg-gray-100">
+  <aside class="h-screen w-1/4 p-5 fixed">
+    {% include "admin_nav.html" %}
+  </aside>
+  <section class="h-screen w-3/4 p-5 absolute inset-y-0 right-0">
+    <header class="flex items-center justify-between">
+      {% comment %}
+      <div class="">
+        <p class="text-gray-400 w-48">
+          Dashboard / <span class="font-bold text-black">Home</span>
+        </p>
+        <h1 class="text-md font-bold">Home</h1>
+      </div>
+      {% endcomment %}
+      <div class="w-full flex justify-end items-center space-x-2">
+        <form action="{% url 'search_book' %}" method="GET">
+          <div class="flex items-center border border-gray-400 rounded-lg px-2">
+            <i class="fa fa-search text-gray-500 mr-3"></i>
+            <input type="text" name="search_text" placeholder="Search books"
+              class="w-full text-md px-2 py-2 border-none focus:outline-none bg-gray-100 focus:ring-0" />
+          </div>
+        </form>
+        <i class="fa fa-bell text-black"></i>
+        <i class="fa fa-envelope text-black"></i>
+        <i class="fa fa-commenting text-black"></i>
+      </div>
+    </header>
+    <main class="flex mt-5 space-x-3">
+      <!-- <a class="relative w-1/3" href="{% url 'view_members' %}">
+        <div>
+          <div class="absolute z-10 inset-0 text-xl text-white font-bold justify-center flex items-center flex-col gap-2">
+            <div>Total Members {{data.total_members}}</div>
+            <div>Total Students {{data.total_students}}</div>
+            <div>Total Staff {{data.total_staff}}</div>
+          </div>
+          <div class="absolute inset-0 bg-black rounded-xl opacity-60"></div>
+          <img src="{% static 'imgs/members.jpg' %}" alt="img" srcset="" class="rounded-xl w-full h-52" />
+        </div>
+      </a> -->
+      <a class="relative w-1/3" href="{% url 'view_members' %}">
+        <div>
+            <div class="absolute z-10 inset-0 text-2xl text-white font-bold justify-center flex items-center flex-col gap-2">
+                <div>Total Members </div>
+                {{data.total_members}}
+                <div class="flex items-center gap-5 text-sm">
+                    <div class="flex items-center">
+                        <span>Students {{data.total_students}}</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span>Staff {{data.total_staff}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="absolute inset-0 bg-black rounded-xl opacity-60"></div>
+            <img src="{% static 'imgs/members.jpg' %}" alt="img" srcset="" class="rounded-xl w-full h-52" />
+        </div>
+    </a>
+    
+
+      <a class="relative w-1/3" href="{% url 'view_books' %}">
+        <div>
+          <div class="absolute z-10 inset-0 text-2xl text-white font-bold justify-center flex items-center flex-col gap-2">
+            Total Books 
+            <div>{{data.total_books}}</div>
+            <div class="flex items-center gap-5 text-sm">
+              <div class="flex items-center">
+                  <span>{{data.total_journals}} Journals</span>
+              </div>
+              <div class="flex items-center">
+                <span>{{data.total_thesis}} Thesis</span>
+            </div>
+          </div>
+          </div>
+          <div class="absolute inset-0 bg-black rounded-xl opacity-65"></div>
+          <img src="{% static 'imgs/library-image-sm.jpg' %}" alt="img" srcset="" class="rounded-xl w-full h-52" />
+        </div>
+      </a>
+
+      <a class="relative w-1/3" href="{% url 'view_issued_books' %}">
+        <div>
+          <div class="absolute z-10 inset-0 text-2xl text-white font-bold justify-center flex items-center flex-col gap-2">
+            In Circulation 
+            <div>{{data.books_in_circulation}}</div>
+          </div>
+          <div class="absolute inset-0 bg-black rounded-xl opacity-80"></div>
+          <img src="{% static 'imgs/in-circulation.png' %}" alt="img" srcset="" class="rounded-xl w-full h-52" />
+        </div>
+      </a>
+
+      <a class="relative w-1/3" href="{% url 'view_books' %}?category=Discarded Books">
+        <div>
+          <div class="absolute z-10 inset-0 text-2xl text-white font-bold justify-center flex items-center flex-col gap-2">
+            Discarded Books 
+            <div>{{data.discarded_books}}</div>
+          </div>
+          <div class="absolute inset-0 bg-black rounded-xl opacity-80"></div>
+          <img src="{% static 'imgs/discarded_books.jpg' %}" alt="img" srcset="" class="rounded-xl w-full h-52" />
+        </div>
+      </a>
+    </main>
+
+    <!-- New table for categories -->
+  
+    <div id="categoryTable" class="mt-5 py-5" >
+      <table class="w-full rounded-table">
+        <thead class="bg-black text-xl text-white h-12 border  rounded-table">
+          <tr class="bg-black text-left text-xs font-medium uppercase ">
+            <th class="px-6 py-3">Category</th>
+            <th class="px-6 py-3">Count</th>
+            <th class="px-6 py-3">Sub Category</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white text-sm">
+          {% for category in data.categories_count %}
+          <tr>
+            <td class="px-6 py-4">{{ category.category|escapejs }}</td>
+            <td class="px-6 py-4">{{ category.count }}</td>
+            <td class="px-6 py-4">
+              <div class="accordion">
+                <button class="accordion-btn text-blue-500 focus:outline-none ring-0 border-none outline-none" data-target="content-{{ forloop.counter }}"><span
+                    class="arrow">View Subcategories ▼</span></button>
+              </div>
+            </td>
+          </tr>
+          <tr class="accordion-content hidden " id="content-{{ forloop.counter }}">
+            {% if category.subcategories %}
+            <td colspan="3">
+              <table class="table-auto w-full mt-5 mb-5 rounded-table ">
+                <thead class="bg-gray-800 text-white text-sm  ">
+                  <tr>
+                    <th class="px-4 py-2 border">Subcategory</th>
+                    <th class="px-4 py-2 border">Count</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for subcategory in category.subcategories %}
+                  <tr class="hover:bg-gray-200">
+                    <td class="border px-6 py-2">{{ subcategory.sub_category }}</td>
+                    <td class="border px-6 py-2">{{ subcategory.count }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </td>
+          </tr>
+          {% else %}
+          <td colspan="3">No subcategories</td>
+          {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+
+    {% comment %} <div style=" margin-top: 50px"></div>
+    <canvas id="bookChart"></canvas>
+    <script>
+      // Data for the chart
+
+      const labels = [];
+      const dataValues = [];
+
+      {% for category in data.categories_count %}
+        labels.push("{{ category.category }}");
+        dataValues.push({{ category.count }});
+      {% endfor %}
+
+      const bookData = {
+        // labels: ['Computer Science', 'Biology', 'Chemistry', 'Mathematics', 'Criminalogy', 'History', 'Religon', 'Business','Law'],
+        labels: labels,
+        datasets: [
+          {
+            label: 'Book Categories',
+            // data: [600, 400, 300, 200, 110,90,80,100,50],
+            data: dataValues,
+            backgroundColor: [
+              'rgba(64, 115, 158, 0.7)',
+              'rgba(25, 42, 86, 0.7)',
+              'rgba(194, 54, 22, 0.7)',
+              'rgba(113, 128, 147, 0.7)',
+              'rgba(64, 115, 158, 0.7)',
+              'rgba(181, 52, 113, 0.7)',
+              'rgba(247, 159, 31, 0.7)',
+              'rgba(197, 108, 240, 0.7)',
+            ],
+            borderColor: [
+              'rgba(64, 115, 158, 1)',
+              'rgba(25, 42, 86, 1 )',
+              'rgba(194, 54, 22, 1)',
+              'rgba(113, 128, 147, 1)',
+              'rgba(64, 115, 158, 1)',
+              'rgba(181, 52, 113, 1)',
+              'rgba(247, 159, 31, 1)',
+              'rgba(197, 108, 240,1)',
+            ],
+            borderWidth: 1,
+          },
+        ],
+      };
+
+      // Chart configuration
+      const chartConfig = {
+        type: 'doughnut',
+        data: bookData,
+        options: {
+          cutout: '50%',
+          barPercentage: 1,
+          indexAxis: 'y',
+          plugins: {
+            legend: {
+              display: false,
+            }
+          },
+          elements: {
+            bar: {
+              borderWidth: 2,
+            }
+          },
+          scales: {
+            x: {
+              grid: {
+                drawOnChartArea: false
+              },
+            },
+            y: {
+              beginAtZero: true,
+            }
+          },
+        },
+      };
+
+      // Get the canvas element
+      const ctx = document.getElementById('bookChart').getContext('2d');
+
+      // Create the chart
+      const bookChart = new Chart(ctx, chartConfig); {% endcomment %}
+
+<script>
+
+      // Accordion
+      // Get all accordion buttons
+      var accordionBtns = document.querySelectorAll('.accordion-btn');
+
+      // Add click event listener to each button
+      accordionBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          // Toggle the 'active' class to expand/collapse the content
+          this.classList.toggle('active');
+          // Toggle the arrow direction
+          var arrow = this.querySelector('.arrow');
+          arrow.textContent = arrow.textContent === 'View Subcategories ▼' ? 'Close Subcategories ▲' : 'View Subcategories ▼';
+
+          // Get the ID of the target content
+          var targetId = this.getAttribute('data-target');
+
+          // Get the target content element
+          var content = document.getElementById(targetId);
+
+          // Toggle the display of the content
+          if (content.style.display === 'table-row') {
+            content.style.display = 'none';
+          } else {
+            content.style.display = 'table-row';
+          }
+        });
+      });
+
+
+    </script>
+  </section>
+</body>
+
+</html>

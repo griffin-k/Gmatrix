@@ -1,0 +1,78 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="{% static 'imgs/lgu-logo.png' %}" />
+  {% tailwind_css %}
+
+  <script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>
+</head>
+
+<body>
+  {% comment %} admin side nav bar {% endcomment %}
+  <div class="h-full bg-white w-full border border-gray-300 rounded-xl text-black flex flex-col justify-between overflow-y-auto">
+    <div class="px-5 mt-3">
+      <a href="/dashboard/">
+        <div class="flex items-center text-black py-2 px-2">
+          <img src="{% static 'imgs/lgu-logo.png' %}" alt="Logo" class="h-8 mr-2" />
+          <h1 class="text-xl font-semibold">GLMS</h1>
+        </div>
+      </a>
+      <ul class="space-y-3 mt-5">
+        <a href="/dashboard/" class="block">
+          <li class="hover:bg-gray-200 cursor-pointer rounded-lg text-gray-500 py-3 text-md px-3">
+            <i class="fa fa-home text-gray-500 mr-3"></i>Dashboard
+          </li>
+        </a>
+
+        <a href="{% url 'books' %}" class="block">
+          <li class="hover:bg-gray-200 cursor-pointer rounded-lg text-gray-500 py-3 text-md px-3">
+            <i class="fa fa-book text-gray-500 mr-3"></i>Books
+          </li>
+        </a>
+        <a href="{% url 'members' %}" class="block">
+          <li class="hover:bg-gray-200 cursor-pointer rounded-lg text-gray-500 py-3 text-md px-3">
+            <i class="fa fa-user text-gray-500 mr-3"></i>Members
+          </li>
+        </a>
+        <a href="{% url 'add_member' %}" class="block">
+          <li class="hover:bg-gray-200 cursor-pointer rounded-lg text-gray-500 py-3 text-md px-3">
+            <i class="fa fa-user-plus text-gray-500 mr-2"></i>Register Member
+          </li>
+        </a>
+        <a href="{% url 'issue_book' %}" class="block">
+          <li class="hover:bg-gray-200 cursor-pointer rounded-lg text-gray-500 py-3 text-md px-3">
+            <i class="fa fa-address-book text-gray-500 mr-3"></i>Issue Book
+          </li>
+        </a>
+        <a href="{% url 'print_tag' %}" class="block">
+          <li class="hover:bg-gray-200 cursor-pointer rounded-lg text-gray-500 py-3 text-md px-3">
+            <i class="fa fa-print text-gray-500 mr-2"></i>Print Tag
+          </li>
+        </a>
+        <a href="{% url 'book_clearance' %}" class="block">
+          <li class="hover:bg-gray-200 cursor-pointer rounded-lg text-gray-500 py-3 text-md px-3">
+            <i class="fa fa-eraser text-gray-500 mr-2"></i>Clearance
+          </li>
+        </a>
+      </ul>
+    </div>
+    <div class="space-y-3 mb-5">
+      <div class="h-1 rounded-2xl w-4/5 mx-auto bg-gray-200"></div>
+      <ul class="px-5 space-y-3">
+        <a href="/dashboard/setting">
+        <li class="hover:bg-gray-200 cursor-pointer rounded-lg text-gray-500 py-3 text-md px-3">
+          <i class="fa fa-cog text-gray-500 mr-3"></i>Settings
+        </li></a>
+        <li class="hover:bg-gray-200 cursor-pointer rounded-lg text-gray-500 py-3 text-md px-3">
+          <a href="/auth/logout"><i class="fa fa-power-off text-gray-500 mr-3"></i>Logout</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</body>
+
+</html>
