@@ -11,7 +11,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('home')
+            return redirect('dashboard')
         else:
             return HttpResponse('Invalid login')
     return render(request, 'Authentication/login.html')
@@ -25,6 +25,6 @@ def register_view(request):
         return redirect('login')
     return render(request, 'Authentication/register.html')
 
-@login_required
-def home_view(request):
-    return render(request, 'Authentication/home.html')
+# @login_required
+# def home_view(request):
+#     return render(request, 'Authentication/home.html')
