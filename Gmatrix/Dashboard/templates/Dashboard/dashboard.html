@@ -8,10 +8,10 @@
 
     {% tailwind_css %}
 
-    <script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>
+    {% comment %} <script src="{% static 'fontawesomefree/js/all.min.js' %}"></script> {% endcomment %}
   </head>
 
   <body>
-    {% include 'header.html' %} dashboard
+    {% include 'Dashboard/admin_header.html' %} dashboard
   </body>
 </html>
