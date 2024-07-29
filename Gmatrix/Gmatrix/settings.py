@@ -16,15 +16,7 @@ import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-
-
 LOGIN_URL = 'login'
-
-
-
-STATIC_URL = '/Static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'Static')]
 
 
 # Quick-start development settings - unsuitable for production
@@ -48,6 +40,8 @@ INSTALLED_APPS = [
     'Authentication.apps.AuthenticationConfig',
     'Dashboard.apps.DashboardConfig',
 
+    # 'django auto reload'
+    'django_browser_reload',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -69,6 +63,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # auto browser reloader 
+    "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
 
 ROOT_URLCONF = 'Gmatrix.urls'
@@ -76,7 +72,11 @@ ROOT_URLCONF = 'Gmatrix.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        "DIRS": [
+            BASE_DIR / "templates",
+            BASE_DIR / "Authenticacion/templates",
+            BASE_DIR / "Dashboard/templtates",
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -139,6 +139,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+    BASE_DIR / "theme/static",
+]
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 

@@ -13,9 +13,6 @@
 <body>
     {% comment %} admin side header nav {% endcomment %}
     <header class="flex items-center justify-between">
-        {% comment %} <div>
-            <p class="text-gray-400 w-48">Dashboard / <span class="font-bold text-black">Home</span></p>
-        </div> {% endcomment %}
         <div class="w-full flex justify-end items-center space-x-2">
             <form action="" method="GET">
                 <div class="flex items-center border border-gray-400 rounded-lg px-2">
@@ -29,19 +26,6 @@
             <i class="fa fa-commenting text-black"></i>
         </div>
     </header>
-    {% if messages %}
-    {% for message in messages %}
-    {% if message.tags == 'success'%}
-    <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
-    {% elif message.tags == 'info' %}
-    <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
-    {% elif message.tags == 'warning' %}
-    <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
-    {% elif message.tags == 'error' %}
-    <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
-    {% endif %}
-    {% endfor %}
-    {% endif %}
 </body>
 
 </html>

@@ -3,6 +3,7 @@
     "build": "tailwindcss -i ./static/styles.css -o ./static/output.css --watch"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.6.0",
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.40",
     "tailwindcss": "^3.4.7"
