@@ -1,0 +1,159 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="{% static 'imgs/lgu-logo.png' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    {% tailwind_css %}
+    <style>
+        .card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            text-align: center;
+            transition: box-shadow 0.3s, transform 0.3s;
+        }
+        .card:hover {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            transform: translateY(-5px);
+        }
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #2c5282;
+            margin-bottom: 0.5rem;
+        }
+        .card-count {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2c5282;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #ffffff;
+            text-decoration: none;
+            text-align: center;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .button-add {
+            background-color: #2b6cb0;
+        }
+        .button-view {
+            background-color: #38a169;
+        }
+        .button-add:hover, .button-view:hover {
+            transform: scale(1.05);
+        }
+        .activity-container, .alerts-container {
+            margin-top: 2rem;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .progress-bar {
+            height: 0.75rem;
+            background: #f3f4f6;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+        .progress-bar-inner {
+            height: 100%;
+            background: #4a90e2;
+            width: 50%; 
+        }
+        .list-item {
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <main class="mt-5 p-5 mx-auto max-w-6xl bg-white rounded-xl border border-gray-300 shadow-md">
+        <h1 class="font-extrabold text-center text-4xl text-gray-800 mb-8">Inventory Dashboard</h1>
+
+        <div class="flex flex-wrap justify-between mb-8">
+            <div class="card flex-1 mx-2">
+                <h2 class="card-title"><i class="fas fa-box"></i> Available</h2>
+                <div class="card-count">123</div>
+                <div class="progress-bar">
+                    <div class="progress-bar-inner" style="width: 70%;"></div>
+                </div>
+            </div>
+
+            <div class="card flex-1 mx-2">
+                <h2 class="card-title"><i class="fas fa-times-circle"></i> Damaged</h2>
+                <div class="card-count">45</div>
+                <div class="progress-bar">
+                    <div class="progress-bar-inner" style="width: 30%;"></div>
+                </div>
+            </div>
+
+            <div class="card flex-1 mx-2">
+                <h2 class="card-title"><i class="fas fa-exclamation-triangle"></i> Not Available</h2>
+                <div class="card-count">67</div>
+                <div class="progress-bar">
+                    <div class="progress-bar-inner" style="width: 50%;"></div>
+                </div>
+            </div>
+
+            <!-- New Card for Incirculation -->
+            <div class="card flex-1 mx-2">
+                <h2 class="card-title"><i class="fas fa-sync-alt"></i> In Circulation</h2>
+                <div class="card-count">89</div>
+                <div class="progress-bar">
+                    <div class="progress-bar-inner" style="width: 60%;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="activity-container">
+            <h2 class="font-bold text-xl text-gray-800 mb-4">Recent Activity</h2>
+            <div class="mb-4">
+                <label for="activity-filter" class="block text-gray-700">Filter by:</label>
+                <select id="activity-filter" class="border p-2 rounded w-full">
+                    <option value="all">All</option>
+                    <option value="added">Added Products</option>
+                    <option value="updated">Updated Products</option>
+                    <option value="damaged">Damaged Products</option>
+                </select>
+            </div>
+            <ul>
+                <li>Added new product "MEGA" - 10 units</li>
+                <li>Updated Systems for to 2 Units</li>
+            </ul>
+        </div>
+
+        <div class="alerts-container mt-8">
+            <h2 class="font-bold text-xl text-gray-800 mb-4">Alerts and Notifications</h2>
+            <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4">
+                <p><i class="fas fa-exclamation-triangle"></i> Low stock alert for "Ardiuno Uno"</p>
+            </div>
+        </div>
+
+        <div class="button-container mt-8">
+            <a href="" class="button button-add">Add Product</a>
+            <a href="" class="button button-view">View Inventory</a>
+        </div>
+    </main>
+</body>
+</html>

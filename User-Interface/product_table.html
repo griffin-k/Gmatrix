@@ -1,0 +1,105 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="{% static 'imgs/robotics-icon.png' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    {% tailwind_css %}
+    <style>
+        .table-container {
+            max-height: 500px; 
+            overflow-y: auto;
+            margin-top: 1.5rem;
+        }
+        table {
+            min-width: 100%;
+            border-collapse: collapse;
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+        th, td {
+            text-align: left;
+            padding: 12px;
+        }
+        th {
+            background-color: #d1d5db;
+            color: #ffffff;
+            font-size: 1.125rem;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f5f9;
+        }
+        .border-b {
+            border-bottom: 1px solid #e5e7eb;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <main class="mt-5 p-5 mx-auto max-w-6xl bg-white rounded-xl border border-gray-300">
+        <h1 class="font-bold text-center text-3xl text-black mb-10">Robotics Lab Products</h1>
+
+        <div class="w-1/2 mx-auto mb-4">
+            <div class="flex items-center bg-gray-50 border border-gray-400 rounded-lg px-2">
+                <input
+                    type="text"
+                    placeholder="Search Products"
+                    class="w-full text-md text-gray-900 bg-gray-50 px-2 py-2 border-none focus:ring-0"
+                    id="search-products"
+                />
+                <i class="fa fa-search text-gray-500 mr-2"></i>
+            </div>
+            <div class="flex justify-center mt-4">
+              <button id="download-btn" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+                  <i class="fas fa-download mr-2"></i> Print Report
+              </button>
+          </div>
+        </div>
+
+   
+
+        <hr class="my-10 border border-gray-300" />
+
+        <div class="table-container">
+            <table class="min-w-full bg-white border border-gray-300">
+                <thead>
+                    <tr class="w-full bg-gray-100 border-b">
+                        <th class="px-4 py-2 text-left text-gray-600">Name</th>
+                        <th class="px-4 py-2 text-left text-gray-600">Model</th>
+                        <th class="px-4 py-2 text-left text-gray-600">Status</th>
+                        <th class="px-4 py-2 text-left text-gray-600">Quantity</th>
+                    </tr>
+                </thead>
+                <tbody id="product-table-body">
+   
+                    <tr class="border-b">
+                        <td class="px-4 py-2">Sensor A</td>
+                        <td class="px-4 py-2">SA123</td>
+                        <td class="px-4 py-2">Available</td>
+                        <td class="px-4 py-2">25</td>
+                    </tr>
+                    <tr class="border-b">
+                        <td class="px-4 py-2">Microcontroller B</td>
+                        <td class="px-4 py-2">MCB456</td>
+                        <td class="px-4 py-2">Not Available</td>
+                        <td class="px-4 py-2">0</td>
+                    </tr>
+                    <tr class="border-b">
+                        <td class="px-4 py-2">Drone X</td>
+                        <td class="px-4 py-2">DX789</td>
+                        <td class="px-4 py-2">Damaged</td>
+                        <td class="px-4 py-2">5</td>
+                    </tr>
+                
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+
+</body>
+</html>

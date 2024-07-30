@@ -1,0 +1,223 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="{% static 'imgs/robotics-icon.png' %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  {% tailwind_css %}
+  <style>
+    body {
+      background-color: #f5f7fa;
+      font-family: 'Inter', sans-serif;
+    }
+    .dropdown, .card-container {
+      margin-bottom: 2rem;
+    }
+    .card-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+    .card {
+      flex: 1 1 calc(33.333% - 1rem);
+      min-width: 250px;
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      background: linear-gradient(135deg, #ffffff, #f5f7fa);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.4s, box-shadow 0.4s, border-color 0.4s;
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      top: -10px;
+      left: 0;
+      width: 100%;
+      height: 30px;
+      background: #e2e8f0;
+      border-bottom: 2px solid #cbd5e1;
+      border-radius: 12px 12px 0 0;
+      border-color: rgba(0, 0, 0, 0.05) transparent transparent transparent;
+      z-index: 1;
+    }
+    .card::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 0;
+      height: 0;
+      border-right: 50px solid transparent;
+      border-top: 80px solid rgba(0, 0, 0.1, 0.1);
+      z-index: 1;
+      transform: scale(-1); 
+    }
+    
+    .card-content {
+      position: relative;
+      z-index: 2;
+    }
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #2c5282;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      transition: color 0.4s;
+    }
+    .card-title i {
+      margin-right: 0.5rem;
+      color: #2c5282;
+      transition: color 0.4s;
+    }
+    .card-description {
+      font-size: 0.875rem;
+      color: #4a5568;
+      transition: color 0.4s;
+    }
+    .card:hover {
+      transform: translateY(-5px) rotate(1deg);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+      border-color: #1d4ed8;
+    }
+    .card:hover .card-title {
+      color: #1d4ed8;
+    }
+    .card:hover .card-title i {
+      color: #1d4ed8;
+    }
+    .card:hover .card-description {
+      color: #2b6cb0;
+    }
+    .card:hover::after {
+      border-top-color: #1d4ed8e;
+    }
+    .dropdown select {
+      width: 100%;
+      padding: 0.75rem;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      background-color: #fff;
+      font-size: 1rem;
+      color: #333;
+      transition: border-color 0.3s, background-color 0.3s;
+    }
+    .dropdown select:focus {
+      border-color: #2c5282;
+      background-color: #f7fafc;
+      outline: none;
+    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @media (max-width: 768px) {
+      .card {
+        flex: 1 1 calc(50% - 1rem);
+      }
+    }
+    @media (max-width: 480px) {
+      .card {
+        flex: 1 1 100%;
+      }
+    }
+  </style>
+</head>
+<body class="flex bg-gray-100">
+  <aside class="h-screen w-1/4 p-5 fixed">
+    {% include "Dashboard/admin_nav.html" %}
+  </aside>
+  <section class="h-screen w-3/4 p-5 absolute inset-y-0 right-0">
+    {% include "Dashboard/admin_header.html" %}
+
+  <main class="mt-5 p-5 mx-auto max-w-6xl bg-white rounded-xl border border-gray-300 shadow-md">
+    <h1 class=" mt-5 font-bold text-center text-4xl text-gray-800 mb-8">
+      Robotics Lab Inventory
+    </h1>
+
+    <div class="w-1/2 mx-auto dropdown">
+      <select class="text-md text-gray-900 bg-gray-100 border-none focus:ring-0" id="status-filter">
+        <option value="">Select Status</option>
+        <option value="available">Available</option>
+        <option value="not-available">Not Available</option>
+        <option value="damaged">Damaged</option>
+      </select>
+    </div>
+
+    <hr class="my-10 border border-gray-300" />
+
+    <div class="card-container">
+      <div class="card">
+        <div class="card-content mt-2">
+          <h2 class="card-title"><i class="fas fa-thermometer-half"></i>Sensors</h2>
+          <p class="card-description">Various types of sensors for robotics projects.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-content mt-2">
+          <h2 class="card-title"><i class="fas fa-tools"></i>Tools</h2>
+          <p class="card-description">Essential tools for robotics assembly and maintenance.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-content mt-2">
+          <h2 class="card-title"><i class="fas fa-microchip"></i>Microcontrollers</h2>
+          <p class="card-description">Microcontrollers used in robotics systems.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-content mt-2">
+          <h2 class="card-title"><i class="fas fa-bolt"></i>Soldering Equipment</h2>
+          <p class="card-description">Tools and materials for soldering components.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-content mt-2">
+          <h2 class="card-title"><i class="fas fa-fan"></i>Drones</h2>
+          <p class="card-description">Drones used for various robotic applications.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-content mt-2">
+          <h2 class="card-title"><i class="fas fa-cogs"></i>Actuators</h2>
+          <p class="card-description">Actuators for movement and control in robots.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-content mt-2">
+          <h2 class="card-title"><i class="fas fa-battery-full"></i>Batteries</h2>
+          <p class="card-description">Batteries for powering robotics projects.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-content mt-2">
+          <h2 class="card-title"><i class="fas fa-desktop"></i>Systems</h2>
+          <p class="card-description">Complete systems for robotics applications.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+  </section>  
+</body>
+</html>

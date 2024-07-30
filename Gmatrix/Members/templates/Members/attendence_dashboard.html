@@ -83,25 +83,34 @@
         }
     </style>
 </head>
-<body class="bg-gray-100">
+<body class="flex bg-gray-100">
+    <aside class="h-screen w-1/4 p-5 fixed">
+      {% include "Dashboard/admin_nav.html" %}
+    </aside>
+    <section class="h-screen w-3/4 p-5 absolute inset-y-0 right-0">
+      {% include "Dashboard/admin_header.html" %}
+  
     <main class="dashboard-container bg-white rounded-xl border border-gray-300 shadow-md">
-        <h1 class="dashboard-title">Attendance Dashboard</h1>
+        <h1 class=" mt-5 font-bold text-center text-4xl text-gray-800 mb-8">
+            Attendance Dashboard</h1>
+
+            <hr class="my-10 border border-gray-300" />
         <div class="card-grid">
-            <!-- Present Today -->
+
             <div class="card">
                 <i class="fas fa-user-check card-icon"></i>
                 <div class="card-title">Present Today</div>
                 <div class="card-count">450</div>
             </div>
 
-            <!-- Absent Today -->
+
             <div class="card">
                 <i class="fas fa-user-times card-icon"></i>
                 <div class="card-title">Absent Today</div>
                 <div class="card-count">50</div>
             </div>
 
-            <!-- Excused Absences -->
+
             <div class="card">
                 <i class="fas fa-user-clock card-icon"></i>
                 <div class="card-title">Excused Absences</div>
@@ -110,12 +119,10 @@
         </div>
 
         <div class="button-container">
-            <a href="/mark-attendance/" class="button button-mark">Mark Attendance</a>
+            <a href="{% url 'mark_atten'%}" class="button button-mark">Mark Attendance</a>
             <a href="/view-attendance/" class="button button-view">View Attendance</a>
         </div>
     </main>
-
-
-
+    </section>
 </body>
 </html>

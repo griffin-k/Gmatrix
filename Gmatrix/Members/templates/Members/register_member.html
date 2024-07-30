@@ -9,11 +9,18 @@
     {% tailwind_css %}
   </head>
 
-  <body>
+  <body class="flex bg-gray-100">
+    <aside class="h-screen w-1/4 p-5 fixed">
+      {% include "Dashboard/admin_nav.html" %}
+    </aside>
+    <section class="h-screen w-3/4 p-5 absolute inset-y-0 right-0">
+      {% include "Dashboard/admin_header.html" %}
+  
+
     <main class="mt-5 text-black bg-white rounded-xl border border-gray-300 px-5 py-10">
       <form action="" method="POST">
         {% csrf_token %}
-        <h1 class="font-bold text-center text-3xl text-black">
+        <h1 class=" mt-5 font-bold text-center text-4xl text-gray-800 mb-8">
           ADD MEMBER DETAILS
         </h1>
         <hr class="my-10 border border-gray-300" />
@@ -21,10 +28,9 @@
         <div class="w-1/2 mx-auto">
           <label class="block mb-2 text-sm font-medium text-gray-900">Member Type</label>
           <select required name="category" id="category"
-            class="bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
+            class="bg-gray-50 p-2 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
             <option value="Student">Student</option>
             <option value="Alumni">Alumni</option>
-
           </select>
         </div>
 
@@ -64,13 +70,11 @@
               <input id="batch_year" type="text" placeholder="FA-2021" name="batch_year" oninput="formatBatchYear(this)"
                 class="flex-1 mr-2 bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
               <select id="dept_degree" name="dept_degree"
-                class="flex-1 mr-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
+                class="flex-1 mr-2 p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
                 <option value="" disabled selected>Select Degree</option>
-             
                   <option value="BSCS">BSCS</option>
                   <option value="BSIT">BSIT</option>
                   <option value="BSSE">BSSE</option>
-              
               </select>
               <input id="roll_num" type="text" placeholder="342" name="roll_num" oninput="formatRollNumber(this)"
                 class="flex-1 bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
@@ -80,7 +84,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-900">Department</label>
             <select required id="department" name="department"
-              class="bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
+              class="bg-gray-50 p-2 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
               <option selected disabled>Select</option>
               <option value="Computer Science">Computer Science</option>
               <option value="Software Engineering">Software Engineering</option>
@@ -91,7 +95,7 @@
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-900">Batch</label>
             <select required id="batch" name="batch"
-              class="bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
+              class="bg-gray-50 p-2 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
               <option selected disabled>Select</option>
               <option value="SP-25">SP-25</option>
               <option value="FA-25">FA-25</option>
@@ -116,17 +120,47 @@
             </select>
           </div>
 
+          {% comment %} <div>
+            <label class="block mb-2 ml-2 text-sm font-medium text-gray-900">Address</label>
+            <textarea placeholder="Main Campus, Sector C DHA Phase 6, Lahore" style="resize: none; padding: 2px;" name="address"
+              class="bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"></textarea>
+          </div> {% endcomment %}
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-900">Address</label>
-            <textarea placeholder="Main Campus, Sector C DHA Phase 6, Lahore" style="resize: none" name="address"
-              class="bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"></textarea>
+            <input type="text" placeholder="Robotics Lab Old Building" name="name" required
+              class="bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-900">Joining Date</label>
+            <input type="date" name="joining_date" required
+              class="bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-900">Designation</label>
+            <select required name="designation" id="designation"
+              class="bg-gray-50 p-2 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
+              <option value="" disabled selected>Select Designation</option>
+              <option value="President">President</option>
+              <option value="Vice President">Vice President</option>
+              <option value="General Secretary">General Secretary</option>
+              <option value="Information Secretary">Information Secretary</option>
+              <option value="Finance Secretary">Finance Secretary</option>
+              <option value="Media Head">Media Head</option>
+              <option value="Event Head">Event Head</option>
+              <option value="Documentation Head">Documentation Head</option>
+              <option value="Member"> Member</option>
+            </select>
           </div>
         </div>
+        
         <button type="submit" onclick="submitForm()"
           class="w-full rounded-xl bg-gray-500 text-white font-bold text-lg py-3 border hover:bg-green-700">
           Add Member
         </button>
       </form>
     </main>
+    </section>
   </body>
 </html>

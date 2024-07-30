@@ -36,6 +36,11 @@ TAILWIND_APP_NAME = 'theme'
 # Application definition
 
 INSTALLED_APPS = [
+
+    'Inventory',
+    'Members',
+    'Documentation',
+    
      
     'Authentication.apps.AuthenticationConfig',
     'Dashboard.apps.DashboardConfig',
@@ -76,6 +81,9 @@ TEMPLATES = [
             BASE_DIR / "templates",
             BASE_DIR / "Authenticacion/templates",
             BASE_DIR / "Dashboard/templtates",
+            BASE_DIR / "Inventory/templtates",
+            BASE_DIR / "Members/templtates",
+
         ],
         'APP_DIRS': True,
         'OPTIONS': {
