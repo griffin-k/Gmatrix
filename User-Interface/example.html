@@ -1,0 +1,28 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="{% static 'imgs/lgu-logo.png' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    {% tailwind_css %}
+    <style>
+      .card {
+        transition: transform 0.3s, box-shadow 0.3s;
+        margin-top: 10px; /* Added this line to set top margin to 10px */
+      }
+      .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="mt-5 rounded-2xl border border-x-gray-300 flex flex-col items-start bg-white w-full h-full p-10">
+     
+    </div>
+    
+  </body>
+</html>

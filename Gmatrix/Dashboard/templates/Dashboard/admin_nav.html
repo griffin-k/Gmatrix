@@ -6,12 +6,40 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   {% tailwind_css %}
+  <style>
 
+    .sidebar {
+      transition: transform 0.3s ease;
+      transform: translateX(-100%);
+    }
+
+    .sidebar.active {
+      transform: translateX(0);
+    }
+
+
+    .sidebar li {
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .sidebar li:hover {
+      background-color: #f0f0f0;
+      transform: scale(1.05);
+    }
+
+    .sidebar i {
+      transition: color 0.3s ease;
+    }
+
+    .sidebar li:hover i {
+      color: #1d4ed8; /* Change to your preferred hover color */
+    }
+  </style>
 </head>
 
 <body>
   {% comment %} admin side nav bar {% endcomment %}
-  <div class="h-full bg-white w-full border border-gray-300 rounded-xl text-black flex flex-col justify-between overflow-y-auto">
+  <div class="sidebar h-full bg-white w-full border border-gray-300 rounded-xl text-black flex flex-col justify-between overflow-y-auto">
     <div class="px-5 mt-3">
       <a href="#">
         <div class="flex items-center text-black py-2 px-2">
@@ -27,32 +55,25 @@
 
         <a href="#" class="block">
           <li class="hover:bg-gray-200 cursor-pointer rounded-lg text-gray-500 py-3 text-md px-3">
-            <i class="fa fa-book text-gray-500 mr-3"></i>Books
+            <i class="fa fa-users text-gray-500 mr-3"></i>Members
           </li>
         </a>
+
         <a href="#" class="block">
           <li class="hover:bg-gray-200 cursor-pointer rounded-lg text-gray-500 py-3 text-md px-3">
-            <i class="fa fa-user text-gray-500 mr-3"></i>Members
+            <i class="fa fa-calendar-check text-gray-500 mr-3"></i>Attendance
           </li>
         </a>
+
         <a href="#" class="block">
           <li class="hover:bg-gray-200 cursor-pointer rounded-lg text-gray-500 py-3 text-md px-3">
-            <i class="fa fa-user-plus text-gray-500 mr-2"></i>Register Member
+            <i class="fa fa-box text-gray-500 mr-3"></i>Inventory
           </li>
         </a>
+
         <a href="#" class="block">
           <li class="hover:bg-gray-200 cursor-pointer rounded-lg text-gray-500 py-3 text-md px-3">
-            <i class="fa fa-address-book text-gray-500 mr-3"></i>Issue Book
-          </li>
-        </a>
-        <a href="#" class="block">
-          <li class="hover:bg-gray-200 cursor-pointer rounded-lg text-gray-500 py-3 text-md px-3">
-            <i class="fa fa-print text-gray-500 mr-2"></i>Print Tag
-          </li>
-        </a>
-        <a href="#" class="block">
-          <li class="hover:bg-gray-200 cursor-pointer rounded-lg text-gray-500 py-3 text-md px-3">
-            <i class="fa fa-eraser text-gray-500 mr-2"></i>Clearance
+            <i class="fa fa-file-text text-gray-500 mr-3"></i>Report
           </li>
         </a>
       </ul>
@@ -61,15 +82,24 @@
       <div class="h-1 rounded-2xl w-4/5 mx-auto bg-gray-200"></div>
       <ul class="px-5 space-y-3">
         <a href="#">
-        <li class="hover:bg-gray-200 cursor-pointer rounded-lg text-gray-500 py-3 text-md px-3">
-          <i class="fa fa-cog text-gray-500 mr-3"></i>Settings
-        </li></a>
+          <li class="hover:bg-gray-200 cursor-pointer rounded-lg text-gray-500 py-3 text-md px-3">
+            <i class="fa fa-cog text-gray-500 mr-3"></i>Settings
+          </li>
+        </a>
         <li class="hover:bg-gray-200 cursor-pointer rounded-lg text-gray-500 py-3 text-md px-3">
           <a href="#"><i class="fa fa-power-off text-gray-500 mr-3"></i>Logout</a>
         </li>
       </ul>
     </div>
   </div>
+  <script>
+    //  JavaScript to toggle the sidebar animation
+    document.addEventListener('DOMContentLoaded', function () {
+      const sidebar = document.querySelector('.sidebar');
+   
+      sidebar.classList.add('active');
+    });
+  </script>
 </body>
 
 </html>

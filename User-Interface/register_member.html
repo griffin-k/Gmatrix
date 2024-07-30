@@ -1,0 +1,132 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="{% static 'imgs/lgu-logo.png' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    {% tailwind_css %}
+  </head>
+
+  <body>
+    <main class="mt-5 text-black bg-white rounded-xl border border-gray-300 px-5 py-10">
+      <form action="" method="POST">
+        {% csrf_token %}
+        <h1 class="font-bold text-center text-3xl text-black">
+          ADD MEMBER DETAILS
+        </h1>
+        <hr class="my-10 border border-gray-300" />
+
+        <div class="w-1/2 mx-auto">
+          <label class="block mb-2 text-sm font-medium text-gray-900">Member Type</label>
+          <select required name="category" id="category"
+            class="bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
+            <option value="Student">Student</option>
+            <option value="Alumni">Alumni</option>
+
+          </select>
+        </div>
+
+        <hr class="my-10 border border-gray-300" />
+
+        <div class="grid gap-6 mb-6 md:grid-cols-2">
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-900">Member Name</label>
+            <input type="text" placeholder="Karimullah" name="name" required
+              class="bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-900">CNIC</label>
+            <input type="text" placeholder="35201-1234567-8" name="cnic" required id="cnicInput"
+              class="bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-900">Phone Number</label>
+            <input type="number" placeholder="03009410503" minlength="11" maxlength="11" name="phone_no" required
+              class="bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-900">Email</label>
+            <input type="email" placeholder="fa21-bscs-342@lgu.edu.pk" name="email" required
+              class="bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
+          </div>
+
+          <div id="reg_num">
+            <input type="hidden" id="reg_num_concat" name="reg_num" />
+            <label class="block mb-2 text-sm font-medium text-gray-900">
+              Registration Number
+            </label>
+            <div class="flex items-center">
+              <input id="batch_year" type="text" placeholder="FA-2021" name="batch_year" oninput="formatBatchYear(this)"
+                class="flex-1 mr-2 bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
+              <select id="dept_degree" name="dept_degree"
+                class="flex-1 mr-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
+                <option value="" disabled selected>Select Degree</option>
+             
+                  <option value="BSCS">BSCS</option>
+                  <option value="BSIT">BSIT</option>
+                  <option value="BSSE">BSSE</option>
+              
+              </select>
+              <input id="roll_num" type="text" placeholder="342" name="roll_num" oninput="formatRollNumber(this)"
+                class="flex-1 bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-900">Department</label>
+            <select required id="department" name="department"
+              class="bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
+              <option selected disabled>Select</option>
+              <option value="Computer Science">Computer Science</option>
+              <option value="Software Engineering">Software Engineering</option>
+              <option value="Information Technology">Information Technology</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-900">Batch</label>
+            <select required id="batch" name="batch"
+              class="bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
+              <option selected disabled>Select</option>
+              <option value="SP-25">SP-25</option>
+              <option value="FA-25">FA-25</option>
+              <option value="SP-24">SP-24</option>
+              <option value="FA-24">FA-24</option>
+              <option value="FA-23">FA-23</option>
+              <option value="SP-23">SP-23</option>
+              <option value="FA-22">FA-22</option>
+              <option value="SP-22">SP-22</option>
+              <option value="FA-21">FA-21</option>
+              <option value="SP-21">SP-21</option>
+              <option value="FA-20">FA-20</option>
+              <option value="SP-20">SP-20</option>
+              <option value="FA-19">FA-19</option>
+              <option value="SP-19">SP-19</option>
+              <option value="FA-18">FA-18</option>
+              <option value="SP-18">SP-18</option>
+              <option value="FA-17">FA-17</option>
+              <option value="SP-17">SP-17</option>
+              <option value="FA-16">FA-16</option>
+              <option value="SP-16">SP-16</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-900">Address</label>
+            <textarea placeholder="Main Campus, Sector C DHA Phase 6, Lahore" style="resize: none" name="address"
+              class="bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"></textarea>
+          </div>
+        </div>
+        <button type="submit" onclick="submitForm()"
+          class="w-full rounded-xl bg-gray-500 text-white font-bold text-lg py-3 border hover:bg-green-700">
+          Add Member
+        </button>
+      </form>
+    </main>
+  </body>
+</html>

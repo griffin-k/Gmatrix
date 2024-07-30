@@ -1,0 +1,152 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="{% static 'imgs/lgu-logo.png' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    {% tailwind_css %}
+    <style>
+      .form-container {
+          max-width: 600px;
+          margin: 0 auto;
+          padding: 1.5rem;
+          background-color: #ffffff;
+      }
+      .table-container {
+          max-height: 500px;
+          overflow-y: auto;
+          border-radius: 0.5rem;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      table {
+          min-width: 100%;
+          border-collapse: collapse;
+          border-radius: 0.5rem;
+          overflow: hidden;
+      }
+      th, td {
+          text-align: left;
+          padding: 12px;
+      }
+      th {
+        background-color: #d1d5db; /* gray-300 */
+        color: #1f2937; /* dark gray text for contrast */
+        border-bottom: 2px solid #e2e8f0;
+    }
+      tr:nth-child(even) {
+          background-color: #f9f9f9;
+      }
+      tr:hover {
+          background-color: #f1f5f9;
+      }
+      .form-checkbox {
+          accent-color: #3b82f6;
+      }
+      .absent-checkbox {
+          accent-color: red;
+      }
+      .submit-button {
+          background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
+          color: #ffffff;
+          border: none;
+          border-radius: 0.75rem;
+          padding: 1rem 2rem;
+          text-transform: uppercase;
+          font-weight: bold;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .submit-button:hover {
+          background: linear-gradient(90deg, #2563eb 0%, #1d4ed8 100%);
+          transform: translateY(-2px);
+      }
+      .submit-button:active {
+          background: linear-gradient(90deg, #1d4ed8 0%, #2563eb 100%);
+          transform: translateY(1px);
+      }
+  </style>
+  
+</head>
+<body>
+    <main class="mt-5 text-black bg-white rounded-xl border border-gray-300 px-5 py-10">
+        <h1 class="font-bold text-center text-3xl text-black mb-10">Mark Attendance</h1>
+
+        <div class="form-container mb-10">
+            <form action="#" method="POST">
+                {% csrf_token %}
+
+                <div class="mb-4">
+                    <label for="date" class="block text-sm font-medium text-gray-700">Date</label>
+                    <input type="date" id="date" name="date" value="{{ today }}" required
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2" />
+                </div>
+
+                <div class="mb-4">
+                    <label for="attendance_type" class="block text-sm font-medium text-gray-700">Attendance Type</label>
+                    <select id="attendance_type" name="attendance_type" required
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2">
+                        <option value="" disabled selected>Select Type</option>
+                        <option value="Meeting">Meeting</option>
+                        <option value="Regular">Regular</option>
+                    </select>
+                </div>
+
+            </form>
+        </div>
+        <hr class="my-10 border border-gray-300" />
+        <h2 class="font-bold text-center text-2xl text-black mb-5">Attendance Records for {{ today }}</h2>
+
+        <div class="table-container">
+            <form action="#" method="POST">
+                {% csrf_token %}
+                <table class="min-w-full bg-white border border-gray-300">
+                    <thead>
+                        <tr class="w-full bg-gray-00 ">
+                            <th class="px-4 py-2 text-left text-gray-600">Member Name</th>
+                            <th class="px-4 py-2 text-left text-gray-600">Present</th>
+                            <th class="px-4 py-2 text-left text-gray-600">Absent</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b">
+                            <td class="px-4 py-2">Zafeer</td>
+                            <td class="px-4 py-2">
+                                <input type="checkbox" id="member1_present" name="attendance[1][Present]" class="form-checkbox">
+                            </td>
+                            <td class="px-4 py-2">
+                                <input type="checkbox" id="member1_absent" name="attendance[1][Absent]" class="form-checkbox absent-checkbox">
+                            </td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="px-4 py-2">Zaheer</td>
+                            <td class="px-4 py-2">
+                                <input type="checkbox" id="member2_present" name="attendance[2][Present]" class="form-checkbox">
+                            </td>
+                            <td class="px-4 py-2">
+                                <input type="checkbox" id="member2_absent" name="attendance[2][Absent]" class="form-checkbox absent-checkbox">
+                            </td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="px-4 py-2">Karimullah</td>
+                            <td class="px-4 py-2">
+                                <input type="checkbox" id="member3_present" name="attendance[3][Present]" class="form-checkbox">
+                            </td>
+                            <td class="px-4 py-2">
+                                <input type="checkbox" id="member3_absent" name="attendance[3][Absent]" class="form-checkbox absent-checkbox">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+        <div class="flex justify-center mt-5">
+            <button type="submit" class="submit-button">
+                Save Attendance
+            </button>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,95 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="{% static 'imgs/lgu-logo.png' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    {% tailwind_css %}
+    <style>
+        .table-container {
+            max-height: 500px; 
+            overflow-y: auto;
+            margin-top: 1.5rem;
+        }
+        table {
+            min-width: 100%;
+            border-collapse: collapse;
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+        th, td {
+            text-align: left;
+            padding: 12px;
+        }
+        th {
+            background-color: #d1d5db;
+            color: #ffffff;
+            font-size: 1.125rem;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f5f9;
+        }
+        .border-b {
+            border-bottom: 1px solid #e5e7eb;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <main class="mt-5 p-5 mx-auto max-w-6xl bg-white rounded-xl border border-gray-300">
+        <h1 class="font-bold text-center text-3xl text-black mb-10">Attendance Summary</h1>
+
+        <div class="w-1/2 mx-auto">
+        <div
+        class="flex items-center mb-2 bg-gray-50 border border-gray-400 rounded-lg px-2"
+      >
+        <input
+          type="text"
+          placeholder="Search Member"
+          value="{{search | default_if_none:''}}"
+          class="w-full text-md text-gray-900 bg-gray-50 px-2 py-2 border-none focus:ring-0"
+          id="search-member"
+        />
+        <i class="fa fa-search text-gray-500 mr-2"></i>
+      </div>
+    </div>
+
+        <hr class="my-10 border border-gray-300" />
+
+        <div class="table-container">
+            <table class="min-w-full bg-white border border-gray-300">
+                <thead>
+                    <tr class="w-full bg-gray-100 border-b">
+                        <th class="px-4 py-2 text-left text-gray-600">Member Name</th>
+                        <th class="px-4 py-2 text-left text-gray-600">Total Present</th>
+                        <th class="px-4 py-2 text-left text-gray-600">Total Absent</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="border-b">
+                        <td class="px-4 py-2">Zafeer</td>
+                        <td class="px-4 py-2">15</td>
+                        <td class="px-4 py-2">1</td>
+                    </tr>
+                    <tr class="border-b">
+                        <td class="px-4 py-2">Karimullah</td>
+                        <td class="px-4 py-2">12</td>
+                        <td class="px-4 py-2">4</td>
+                    </tr>
+                    <tr class="border-b">
+                        <td class="px-4 py-2">Zaheer</td>
+                        <td class="px-4 py-2">14</td>
+                        <td class="px-4 py-2">2</td>
+                    </tr>
+                  
+        
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+</html>
