@@ -1,33 +1,45 @@
 {% load static tailwind_tags %}
+
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="{% static 'imgs/lgu-logo.png' %}" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    {% tailwind_css %}
-  </head>
-
-  <body class="flex bg-gray-100">
-    <aside class="h-screen w-1/4 p-5 fixed">
-      {% include "Dashboard/admin_nav.html" %}
-    </aside>
-    <section class="h-screen w-3/4 p-5 absolute inset-y-0 right-0">
-      {% include "Dashboard/admin_header.html" %}
-  
-
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="{% static 'imgs/lgu-logo.png' %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.js"></script>
+  {% tailwind_css %}
+  <style>
+    /* Add custom styles if needed */
+  </style>
+</head>
+<body class="flex bg-gray-100">
+  <aside class="h-screen w-1/4 p-5 fixed">
+    {% include "Dashboard/admin_nav.html" %}
+  </aside>
+  <section class="h-screen w-3/4 p-5 absolute inset-y-0 right-0">
+    {% include "Dashboard/admin_header.html" %}
     <main class="mt-5 text-black bg-white rounded-xl border border-gray-300 px-5 py-10">
-      <form action="" method="POST">
-        {% csrf_token %}
-        <h1 class=" mt-5 font-bold text-center text-4xl text-gray-800 mb-8">
-          ADD MEMBER DETAILS
-        </h1>
-        <hr class="my-10 border border-gray-300" />
+      <h1 class="mt-5 font-bold text-center text-4xl text-gray-800 mb-8">Add Member Details</h1>
+      <hr class="my-10 border border-gray-300" />
 
+      <!-- Display success or error messages -->
+      {% if messages %}
+        <div class="mb-4">
+          {% for message in messages %}
+            <div class="p-4 mb-4 text-sm text-white bg-green-500 rounded-lg dark:bg-green-800 dark:text-green-300" role="alert">
+              <span class="font-medium">{{ message }}</span>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <form id="memberForm" action="{% url 'members_register' %}" method="POST">
+        {% csrf_token %}
         <div class="w-1/2 mx-auto">
           <label class="block mb-2 text-sm font-medium text-gray-900">Member Type</label>
-          <select required name="category" id="category"
+          <select name="category" id="category"
             class="bg-gray-50 p-2 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
             <option value="Student">Student</option>
             <option value="Alumni">Alumni</option>
@@ -51,7 +63,7 @@
 
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-900">Phone Number</label>
-            <input type="number" placeholder="03009410503" minlength="11" maxlength="11" name="phone_no" required
+            <input type="text" placeholder="03009410503" minlength="11" maxlength="11" name="phone_no" required
               class="bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
           </div>
 
@@ -63,18 +75,16 @@
 
           <div id="reg_num">
             <input type="hidden" id="reg_num_concat" name="reg_num" />
-            <label class="block mb-2 text-sm font-medium text-gray-900">
-              Registration Number
-            </label>
+            <label class="block mb-2 text-sm font-medium text-gray-900">Registration Number</label>
             <div class="flex items-center">
               <input id="batch_year" type="text" placeholder="FA-2021" name="batch_year" oninput="formatBatchYear(this)"
                 class="flex-1 mr-2 bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
-              <select id="dept_degree" name="dept_degree"
+              <select id="dept_degree" name="dept_degree" required
                 class="flex-1 mr-2 p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
                 <option value="" disabled selected>Select Degree</option>
-                  <option value="BSCS">BSCS</option>
-                  <option value="BSIT">BSIT</option>
-                  <option value="BSSE">BSSE</option>
+                <option value="BSCS">BSCS</option>
+                <option value="BSIT">BSIT</option>
+                <option value="BSSE">BSSE</option>
               </select>
               <input id="roll_num" type="text" placeholder="342" name="roll_num" oninput="formatRollNumber(this)"
                 class="flex-1 bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
@@ -83,7 +93,7 @@
 
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-900">Department</label>
-            <select required id="department" name="department"
+            <select id="department" name="department"
               class="bg-gray-50 p-2 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
               <option selected disabled>Select</option>
               <option value="Computer Science">Computer Science</option>
@@ -94,7 +104,7 @@
 
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-900">Batch</label>
-            <select required id="batch" name="batch"
+            <select id="batch" name="batch"
               class="bg-gray-50 p-2 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
               <option selected disabled>Select</option>
               <option value="SP-25">SP-25</option>
@@ -120,14 +130,9 @@
             </select>
           </div>
 
-          {% comment %} <div>
-            <label class="block mb-2 ml-2 text-sm font-medium text-gray-900">Address</label>
-            <textarea placeholder="Main Campus, Sector C DHA Phase 6, Lahore" style="resize: none; padding: 2px;" name="address"
-              class="bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"></textarea>
-          </div> {% endcomment %}
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-900">Address</label>
-            <input type="text" placeholder="Robotics Lab Old Building" name="name" required
+            <input type="text" placeholder="Robotics Lab Old Building" name="address" required
               class="bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
           </div>
 
@@ -139,28 +144,120 @@
 
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-900">Designation</label>
-            <select required name="designation" id="designation"
+            <select name="designation" id="designation" required
               class="bg-gray-50 p-2 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
               <option value="" disabled selected>Select Designation</option>
               <option value="President">President</option>
               <option value="Vice President">Vice President</option>
-              <option value="General Secretary">General Secretary</option>
-              <option value="Information Secretary">Information Secretary</option>
-              <option value="Finance Secretary">Finance Secretary</option>
-              <option value="Media Head">Media Head</option>
-              <option value="Event Head">Event Head</option>
-              <option value="Documentation Head">Documentation Head</option>
-              <option value="Member"> Member</option>
+              <option value="Secretary">Secretary</option>
+              <option value="Treasurer">Treasurer</option>
+              <option value="Member">Member</option>
             </select>
           </div>
         </div>
-        
-        <button type="submit" onclick="submitForm()"
-          class="w-full rounded-xl bg-gray-500 text-white font-bold text-lg py-3 border hover:bg-green-700">
+
+        <button type="button" id="checkButton" class="w-full rounded-xl bg-gray-500 text-white font-bold text-lg py-3 border hover:bg-green-700">
           Add Member
         </button>
+        <button type="submit" id="hiddenSubmitButton" style="display: none;"></button>
       </form>
     </main>
-    </section>
-  </body>
+  </section>
+
+  <!-- JavaScript to handle input formatting -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const cnicInput = document.getElementById('cnicInput');
+      const phoneInput = document.querySelector('input[name="phone_no"]');
+      const batchYearInput = document.getElementById('batch_year');
+      const form = document.getElementById('memberForm');
+      const checkButton = document.getElementById('checkButton');
+      const hiddenSubmitButton = document.getElementById('hiddenSubmitButton');
+      let isFormValid = true;
+
+      // Function to format CNIC
+      const formatCNIC = (value) => {
+        return value.replace(/(\d{5})(\d{7})(\d{1})/, '$1-$2-$3');
+      };
+
+      // Function to format phone number
+      const formatPhoneNumber = (value) => {
+        return value.replace(/\D/g, '').slice(0, 11);
+      };
+
+      // Function to format batch year
+      const formatBatchYear = (input) => {
+        let value = input.value.toUpperCase();
+        value = value.replace(/[^A-Z0-9]/g, ''); // Remove invalid characters
+        if (value.length > 0) {
+          value = value.slice(0, 2) + '-' + value.slice(2);
+        }
+        input.value = value;
+      };
+
+      // Function to format roll number
+      const formatRollNumber = (input) => {
+        let value = input.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+        input.value = value;
+      };
+
+      // Event listener for CNIC input formatting
+      cnicInput.addEventListener('input', () => {
+        cnicInput.value = formatCNIC(cnicInput.value);
+      });
+
+      // Event listener for phone number input formatting
+      phoneInput.addEventListener('input', () => {
+        phoneInput.value = formatPhoneNumber(phoneInput.value);
+      });
+
+      // Event listener for batch year input formatting
+      batchYearInput.addEventListener('input', () => {
+        formatBatchYear(batchYearInput);
+      });
+
+      // Event listener for roll number input formatting
+      document.getElementById('roll_num').addEventListener('input', () => {
+        formatRollNumber(document.getElementById('roll_num'));
+      });
+
+      // Check CNIC and disable/enable submit button
+      cnicInput.addEventListener('blur', async () => {
+        const cnic = cnicInput.value.trim();
+        if (cnic) {
+          try {
+            const response = await fetch(`/check-cnic/?cnic=${encodeURIComponent(cnic)}`);
+            const data = await response.json();
+            
+            if (data.exists) {
+              Toastify({
+                text: "A member with this CNIC is already registered.",
+                duration: 3000,
+                backgroundColor: "linear-gradient(to right, #ff4b2b, #ff416c)",
+              }).showToast();
+              isFormValid = false;
+            } else {
+              isFormValid = true;
+            }
+          } catch (error) {
+            console.error('Error checking CNIC:', error);
+            isFormValid = false;
+          }
+        }
+      });
+
+      checkButton.addEventListener('click', (event) => {
+        if (isFormValid) {
+          hiddenSubmitButton.click(); 
+        } else {
+          Toastify({
+            text: "The form cannot be submitted because the CNIC is already registered.",
+            duration: 3000,
+            backgroundColor: "linear-gradient(to right, #ff4b2b, #ff416c)",
+          }).showToast();
+        }
+      });
+    });
+  </script>
+</body>
 </html>
