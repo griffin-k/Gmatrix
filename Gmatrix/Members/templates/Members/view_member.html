@@ -123,11 +123,21 @@
             const search = document.getElementById('search-member').value;
             const year = document.getElementById('year-filter').value;
 
-            const url = new URL(window.location.href);
-            url.searchParams.set('search', search);
-            url.searchParams.set('year', year);
-
-            window.location.href = url.toString();
+            $.ajax({
+                url: window.location.href,
+                type: 'GET',
+                data: {
+                    search: search,
+                    year: year
+                },
+                success: function(response) {
+                    const newContent = $(response).find('#members-container').html();
+                    $('#members-container').html(newContent);
+                },
+                error: function() {
+                    toastr.error('An error occurred. Please try again.');
+                }
+            });
         }
 
         function openModal(url) {
@@ -151,7 +161,9 @@
                     if (response.success) {
                         closeModal();
                         toastr.success('Member has been deleted.');
-                        setTimeout(() => location.reload(), 1000); // Refresh the page after 1 second
+                        setTimeout(() => {
+                            applyFilters(); // Update the list without reloading
+                        }, 1000);
                     } else {
                         toastr.error('An error occurred. Please try again.');
                     }
@@ -201,7 +213,7 @@
                 </div>
             </div>
             <hr class="my-10 border border-gray-300" />
-            <div class="space-y-6">
+            <div id="members-container" class="space-y-6">
                 {% for member in members %}
                 <div class="bg-white shadow-sm border border-gray-200 rounded-lg p-6 card">
                     <div class="card-content">
@@ -226,19 +238,17 @@
                 <p class="text-center text-gray-500">No members found.</p>
                 {% endfor %}
             </div>
+            <div id="confirm-modal" class="modal">
+                <div class="modal-content">
+                    <h2 class="text-xl font-bold mb-4">Confirm Delete</h2>
+                    <p>Are you sure you want to delete this member?</p>
+                    <div class="modal-actions">
+                        <button onclick="confirmDelete()" class="btn px-4 py-2 bg-red-600 text-white rounded-lg">Delete</button>
+                        <button onclick="closeModal()" class="btn px-4 py-2 bg-gray-600 text-white rounded-lg">Cancel</button>
+                    </div>
+                </div>
+            </div>
         </main>
     </section>
-
-    <!-- Modal for Confirmation -->
-    <div id="confirm-modal" class="modal">
-        <div class="modal-content">
-            <h2 class="text-xl font-bold mb-4">Confirm Deletion</h2>
-            <p class="mb-4">Are you sure you want to delete this member?</p>
-            <div class="modal-actions">
-                <button class="btn bg-red-500 text-white px-4 py-2 rounded-lg" onclick="confirmDelete()">Delete</button>
-                <button class="btn bg-gray-500 text-white px-4 py-2 rounded-lg" onclick="closeModal()">Cancel</button>
-            </div>
-        </div>
-    </div>
 </body>
 </html>

@@ -45,9 +45,14 @@ def members_view(request):
 
     query = Q()
 
-    if search_query:
-        query &= Q(name__icontains=search_query) | Q(cnic__icontains=search_query) | Q(phone_no__icontains=search_query) | Q(email__icontains=search_query)
-
+    query &= (Q(name__icontains=search_query) |
+              Q(cnic__icontains=search_query) |
+              Q(phone_no__icontains=search_query) |
+              Q(email__icontains=search_query) |
+              Q(designation__icontains=search_query) |
+              Q(dept_degree__icontains=search_query))
+    
+    
     if year_filter:
         year_start, year_end = year_filter.split('-')
         year_start = f'20{year_start}'
