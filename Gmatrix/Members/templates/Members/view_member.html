@@ -113,6 +113,29 @@
         .modal-actions .btn {
             margin: 0 0.5rem;
         }
+        .designation {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #ffffff;
+            background-color: #a0d6f5;
+            border-radius: 12px;
+            padding: 0.4rem 0.8rem;
+            margin-top: 0.25rem;
+            border: 1px solid #8ab8d1;
+            display: inline-block;
+            text-align: center;
+            box-shadow: none;
+            text-transform: capitalize;
+        }
+        .member-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #2b6cb0;
+            margin: 0;
+        }
+        
+        
+        
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
@@ -219,10 +242,12 @@
                     <div class="card-content">
                         <img src="https://via.placeholder.com/150" alt="Member Image" />
                         <div class="details">
-                            <h3>{{ member.name }}</h3>
-                            <p>CNIC: {{ member.cnic }}</p>
-                            <p>Phone: {{ member.phone_no }}</p>
-                            <p>Email: {{ member.email }}</p>
+                            <h3 class="member-name">{{ member.name }}</h3>
+                            <p > Phone Number : {{ member.phone_no }}</p>
+                            <p > Roll No      : {{ member.batch_year }}/{{ member.dept_degree }}/{{member.roll_num}}</p>
+                            <p > Email        : {{ member.email }}</p>
+                            <p class="designation">Designation: {{ member.designation }}</p>
+                      
                         </div>
                         <div class="actions">
                             <a href="#" class="hover:underline" title="Edit">

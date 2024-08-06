@@ -1,5 +1,13 @@
 from django.db import models
 
+
+
+
+
+
+
+
+
 class Member(models.Model):
     CATEGORY_CHOICES = [
         ('Student', 'Student'),
@@ -63,3 +71,15 @@ class Member(models.Model):
 
     def __str__(self):
         return self.name
+
+
+
+
+class Attendance(models.Model):
+    member = models.ForeignKey(Member, on_delete=models.CASCADE)
+    date = models.DateField()
+    attendance_type = models.CharField(max_length=50)
+    is_present = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.member.name} - {self.date}"

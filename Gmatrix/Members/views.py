@@ -2,13 +2,15 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from .forms import MemberForm
-from .models import Member
+from .models import Member, Attendance
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from datetime import datetime
 from django.http import HttpResponseNotAllowed
 from django.db.models import Q
+from django.utils import timezone
+from django.contrib import messages
 
 
 
@@ -20,8 +22,8 @@ def dashboard_members(request):
 def dashboard_attendence(request):
     return render(request, 'Members/attendence_dashboard.html')
 
-def mark_attendence(request):
-    return render(request, 'Members/mark_attendence.html')
+# def mark_attendence(request):
+#     return render(request, 'Members/mark_attendence.html')
 
 
 
@@ -36,6 +38,39 @@ def members_view(request):
 # def members_view(request):
 
 #     return render(request, 'view_member.html')
+
+def mark_attendence(request):
+    if request.method == 'POST':
+        date = request.POST.get('date')
+        attendance_type = request.POST.get('attendance_type')
+        attendance_data = request.POST.getlist('attendance')
+
+        for entry in attendance_data:
+            member_id, status = entry.split(':')
+            member = Member.objects.get(id=int(member_id))
+            is_present = status == 'Present'
+
+            # Create or update attendance record
+            Attendance.objects.update_or_create(
+                member=member,
+                date=date,
+                defaults={'is_present': is_present, 'attendance_type': attendance_type}
+            )
+        
+        messages.success(request, 'Attendance marked successfully!')
+        return redirect('mark_attendance')  # Redirect to the same page or another page
+
+    # GET request handling
+    today = timezone.now().date()
+    members = Member.objects.all()
+    return render(request, 'Members/mark_attendence.html', {'members': members, 'today': today})
+
+
+
+
+
+
+
 
 
 def members_view(request):

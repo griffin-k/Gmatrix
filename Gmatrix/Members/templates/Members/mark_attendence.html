@@ -11,7 +11,7 @@
       .form-container {
           max-width: 600px;
           margin: 0 auto;
-          padding: 1.5rem;
+   
           background-color: #ffffff;
       }
       .table-container {
@@ -67,8 +67,7 @@
           background: linear-gradient(90deg, #1d4ed8 0%, #2563eb 100%);
           transform: translateY(1px);
       }
-  </style>
-  
+    </style>
 </head>
 <body class="flex bg-gray-100">
     <aside class="h-screen w-1/4 p-5 fixed">
@@ -76,26 +75,20 @@
     </aside>
     <section class="h-screen w-3/4 p-5 absolute inset-y-0 right-0">
       {% include "Dashboard/admin_header.html" %}
-  
-
-      
-    <main class="mt-5 text-black bg-white rounded-xl border border-gray-300 px-5 py-10">
-        <h1 class=" mt-5 font-bold text-center text-4xl text-gray-800 mb-8">
-            Mark Attendance</h1>
-
-            <hr class="my-10 border border-gray-300" />
-
-        <div class="form-container mb-10">
-            <form action="#" method="POST">
-                {% csrf_token %}
-
-                <div class="mb-4">
+      <main class="mt-5 mb-10 text-black bg-white rounded-xl border border-gray-300 w px-5 py-10">
+        <h1 class="mt-5 font-bold text-center text-4xl text-gray-800 mb-8">
+            Mark Attendance
+        </h1>
+        <hr class="my-10  border border-gray-300" />
+       
+          
+                <div class=" form-container mb-4">
                     <label for="date" class="block text-sm font-medium text-gray-700">Date</label>
                     <input type="date" id="date" name="date" value="{{ today }}" required
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2" />
                 </div>
 
-                <div class="mb-4">
+                <div class="form-container ">
                     <label for="attendance_type" class="block text-sm font-medium text-gray-700">Attendance Type</label>
                     <select id="attendance_type" name="attendance_type" required
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2">
@@ -105,60 +98,43 @@
                     </select>
                 </div>
 
-            </form>
-        </div>
-        <hr class="my-10 border border-gray-300" />
-        <h2 class="font-bold text-center text-2xl text-black mb-5">Attendance Records for {{ today }}</h2>
+                <hr class="my-10 border border-gray-300" />
+                <h2 class="font-bold text-center text-2xl text-black mb-5">Attendance Records for {{ today }}</h2>
+                <form action="{% url 'mark_attendance' %}" method="POST">
+                    {% csrf_token %}
+                <div class="table-container">
+                    <table class="min-w-full bg-white border border-gray-300">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="px-4 py-2 text-left text-gray-600">Member Name</th>
+                                <th class="px-4 py-2 text-left text-gray-600">Present</th>
+                                <th class="px-4 py-2 text-left text-gray-600">Absent</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for member in members %}
+                            <tr class="border-b">
+                                <td class="px-4 py-2">{{ member.name }}</td>
+                                <td class="px-4 py-2">
+                                    <input type="checkbox" id="member{{ forloop.counter }}_present" name="attendance[{{ member.id }}][Present]" class="form-checkbox">
+                                </td>
+                                <td class="px-4 py-2">
+                                    <input type="checkbox" id="member{{ forloop.counter }}_absent" name="attendance[{{ member.id }}][Absent]" class="form-checkbox absent-checkbox">
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
 
-        <div class="table-container">
-            <form action="#" method="POST">
-                {% csrf_token %}
-                <table class="min-w-full bg-white border border-gray-300">
-                    <thead>
-                        <tr class="w-full bg-gray-00 ">
-                            <th class="px-4 py-2 text-left text-gray-600">Member Name</th>
-                            <th class="px-4 py-2 text-left text-gray-600">Present</th>
-                            <th class="px-4 py-2 text-left text-gray-600">Absent</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="border-b">
-                            <td class="px-4 py-2">Zafeer</td>
-                            <td class="px-4 py-2">
-                                <input type="checkbox" id="member1_present" name="attendance[1][Present]" class="form-checkbox">
-                            </td>
-                            <td class="px-4 py-2">
-                                <input type="checkbox" id="member1_absent" name="attendance[1][Absent]" class="form-checkbox absent-checkbox">
-                            </td>
-                        </tr>
-                        <tr class="border-b">
-                            <td class="px-4 py-2">Zaheer</td>
-                            <td class="px-4 py-2">
-                                <input type="checkbox" id="member2_present" name="attendance[2][Present]" class="form-checkbox">
-                            </td>
-                            <td class="px-4 py-2">
-                                <input type="checkbox" id="member2_absent" name="attendance[2][Absent]" class="form-checkbox absent-checkbox">
-                            </td>
-                        </tr>
-                        <tr class="border-b">
-                            <td class="px-4 py-2">Karimullah</td>
-                            <td class="px-4 py-2">
-                                <input type="checkbox" id="member3_present" name="attendance[3][Present]" class="form-checkbox">
-                            </td>
-                            <td class="px-4 py-2">
-                                <input type="checkbox" id="member3_absent" name="attendance[3][Absent]" class="form-checkbox absent-checkbox">
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="flex justify-center mt-5">
+                    <button type="submit" class="submit-button">
+                        Save Attendance
+                    </button>
+                </div>
             </form>
         </div>
-        <div class="flex justify-center mt-5">
-            <button type="submit" class="submit-button">
-                Save Attendance
-            </button>
-        </div>
-    </main>
+      </main>
     </section>
 </body>
 </html>
