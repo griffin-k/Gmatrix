@@ -11,6 +11,7 @@ from django.http import HttpResponseNotAllowed
 from django.db.models import Q
 from django.utils import timezone
 from django.contrib import messages
+from datetime import date
 
 
 
@@ -27,44 +28,25 @@ def dashboard_attendence(request):
 
 
 
-
-def members_view(request):
-    return render(request, 'Members/view_member.html')
-
-
-
-
-
-# def members_view(request):
-
-#     return render(request, 'view_member.html')
-
 def mark_attendence(request):
     if request.method == 'POST':
         date = request.POST.get('date')
         attendance_type = request.POST.get('attendance_type')
-        attendance_data = request.POST.getlist('attendance')
+        members = Member.objects.all()
+        for member in members:
+            present = request.POST.get(f'attendance[{member.id}][Present]', 'off') == 'on'
+            absent = request.POST.get(f'attendance[{member.id}][Absent]', 'off') == 'on'
+            if present or absent:
+                Attendance.objects.update_or_create(
+                    member=member,
+                    date=date,
+                    defaults={'present': present, 'absent': absent, 'type': attendance_type}
+                )
+        return redirect('attendance_mark')  # Redirect to a success page or another view
 
-        for entry in attendance_data:
-            member_id, status = entry.split(':')
-            member = Member.objects.get(id=int(member_id))
-            is_present = status == 'Present'
-
-            # Create or update attendance record
-            Attendance.objects.update_or_create(
-                member=member,
-                date=date,
-                defaults={'is_present': is_present, 'attendance_type': attendance_type}
-            )
-        
-        messages.success(request, 'Attendance marked successfully!')
-        return redirect('mark_attendance')  # Redirect to the same page or another page
-
-    # GET request handling
     today = timezone.now().date()
     members = Member.objects.all()
-    return render(request, 'Members/mark_attendence.html', {'members': members, 'today': today})
-
+    return render(request, 'Members/mark_attendence.html', {'today': today, 'members': members})
 
 
 

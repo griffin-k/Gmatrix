@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 
 
@@ -74,12 +75,10 @@ class Member(models.Model):
 
 
 
-
 class Attendance(models.Model):
-    member = models.ForeignKey(Member, on_delete=models.CASCADE)
+    member = models.ForeignKey('Member', on_delete=models.CASCADE)
     date = models.DateField()
-    attendance_type = models.CharField(max_length=50)
-    is_present = models.BooleanField(default=False)
+    type = models.CharField(max_length=50, default='Regular')  
+    present = models.BooleanField(default=False)
+    absent = models.BooleanField(default=False)
 
-    def __str__(self):
-        return f"{self.member.name} - {self.date}"
