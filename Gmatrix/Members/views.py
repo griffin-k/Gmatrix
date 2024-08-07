@@ -42,6 +42,7 @@ def mark_attendence(request):
                     date=date,
                     defaults={'present': present, 'absent': absent, 'type': attendance_type}
                 )
+        messages.success(request, 'Attendance saved successfully!')
         return redirect('attendance_mark')  # Redirect to a success page or another view
 
     today = timezone.now().date()

@@ -7,68 +7,68 @@
     <link rel="icon" href="{% static 'imgs/lgu-logo.png' %}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     {% tailwind_css %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css">
     <style>
-      .form-container {
-          max-width: 600px;
-          margin: 0 auto;
-          padding: 1.5rem;
-          background-color: #ffffff;
-      }
-      .table-container {
-          max-height: 500px;
-          overflow-y: auto;
-          border-radius: 0.5rem;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      }
-      table {
-          min-width: 100%;
-          border-collapse: collapse;
-          border-radius: 0.5rem;
-          overflow: hidden;
-      }
-      th, td {
-          text-align: left;
-          padding: 12px;
-      }
-      th {
-        background-color: #d1d5db; /* gray-300 */
-        color: #1f2937; /* dark gray text for contrast */
-        border-bottom: 2px solid #e2e8f0;
-    }
-      tr:nth-child(even) {
-          background-color: #f9f9f9;
-      }
-      tr:hover {
-          background-color: #f1f5f9;
-      }
-      .form-checkbox {
-          accent-color: #3b82f6;
-      }
-      .absent-checkbox {
-          accent-color: red;
-      }
-      .submit-button {
-          background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
-          color: #ffffff;
-          border: none;
-          border-radius: 0.75rem;
-          padding: 1rem 2rem;
-          text-transform: uppercase;
-          font-weight: bold;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      }
-      .submit-button:hover {
-          background: linear-gradient(90deg, #2563eb 0%, #1d4ed8 100%);
-          transform: translateY(-2px);
-      }
-      .submit-button:active {
-          background: linear-gradient(90deg, #1d4ed8 0%, #2563eb 100%);
-          transform: translateY(1px);
-      }
-  </style>
-  
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 1.5rem;
+            background-color: #ffffff;
+        }
+        .table-container {
+            max-height: 500px;
+            overflow-y: auto;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            min-width: 100%;
+            border-collapse: collapse;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+        th, td {
+            text-align: left;
+            padding: 12px;
+        }
+        th {
+            background-color: #d1d5db; /* gray-300 */
+            color: #1f2937; /* dark gray text for contrast */
+            border-bottom: 2px solid #e2e8f0;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f5f9;
+        }
+        .form-checkbox {
+            accent-color: #3b82f6;
+        }
+        .absent-checkbox {
+            accent-color: red;
+        }
+        .submit-button {
+            background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
+            color: #ffffff;
+            border: none;
+            border-radius: 0.75rem;
+            padding: 1rem 2rem;
+            text-transform: uppercase;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .submit-button:hover {
+            background: linear-gradient(90deg, #2563eb 0%, #1d4ed8 100%);
+            transform: translateY(-2px);
+        }
+        .submit-button:active {
+            background: linear-gradient(90deg, #1d4ed8 0%, #2563eb 100%);
+            transform: translateY(1px);
+        }
+    </style>
 </head>
 <body class="flex bg-gray-100">
     <aside class="h-screen w-1/4 p-5 fixed">
@@ -77,13 +77,12 @@
     <section class="h-screen w-3/4 p-5 absolute inset-y-0 right-0">
       {% include "Dashboard/admin_header.html" %}
   
-
-      
     <main class="mt-5 text-black bg-white rounded-xl border border-gray-300 px-5 py-10">
-        <h1 class=" mt-5 font-bold text-center text-4xl text-gray-800 mb-8">
-            Mark Attendance</h1>
+        <h1 class="mt-5 font-bold text-center text-4xl text-gray-800 mb-8">
+            Mark Attendance
+        </h1>
 
-            <hr class="my-10 border border-gray-300" />
+        <hr class="my-10 border border-gray-300" />
 
         <div class="form-container mb-10">
             <form action="{% url 'attendance_mark' %}" method="POST">
@@ -105,8 +104,8 @@
                     </select>
                 </div>
 
-            </div>
                 <hr class="my-10 border border-gray-300" />
+
                 <div class="table-container">
                     <table class="min-w-full bg-white border border-gray-300">
                         <thead>
@@ -131,6 +130,7 @@
                         </tbody>
                     </table>
                 </div>
+
                 <div class="flex justify-center mt-5">
                     <button type="submit" class="submit-button">
                         Save Attendance
@@ -140,5 +140,61 @@
         </div>
     </main>
     </section>
+
+    <!-- Toastr Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        // Check for Django messages and show toasts
+        {% if messages %}
+          {% for message in messages %}
+            toastr.{{ message.tags }}('{{ message.message }}');
+          {% endfor %}
+        {% endif %}
+
+        // Handle form submission via AJAX
+        $('form').on('submit', function(event) {
+          event.preventDefault();
+          var formData = $(this).serialize();
+          $.ajax({
+            type: 'POST',
+            url: $(this).attr('action'),
+            data: formData,
+            headers: {
+              'X-CSRFToken': $('input[name="csrfmiddlewaretoken"]').val()
+            },
+            success: function(response) {
+                toastr.success('Attendance saved successfully!');
+                setTimeout(function() {
+                  window.location.reload();
+                }, 1000); 
+            },
+            error: function(xhr, status, error) {
+              toastr.error('An error occurred while saving attendance.');
+            }
+          });
+        });
+      });
+    </script>
+
+    <!-- Script for checking and unchecking checkboxes one at a time -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+          checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function () {
+              if (this.checked) {
+                const memberId = this.id.split('_')[0].replace('member', '');
+                checkboxes.forEach(cb => {
+                  if (cb.id !== this.id && cb.id.startsWith('member' + memberId)) {
+                    cb.checked = false;
+                  }
+                });
+              }
+            });
+          });
+        });
+      </script> 
 </body>
 </html>
