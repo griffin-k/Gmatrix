@@ -9,6 +9,9 @@ urlpatterns = [
     path('members_mgt_register/', views.members_register, name='members_register'),
     path('attendence_mgt/', views.dashboard_attendence, name='attendence'),
     path('attendence_get/', views.mark_attendence, name='attendance_mark'),
+    path('view-attendance/', views.check_attendance, name='attendance_view'),
+
+ 
     
 
 
