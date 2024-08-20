@@ -12,10 +12,12 @@ from django.db.models import Q
 from django.utils import timezone
 from django.contrib import messages
 from datetime import date
+from django.core.paginator import Paginator
 
 from django.shortcuts import render
 from django.utils.timezone import now
 from datetime import datetime, timedelta
+from django.template.loader import render_to_string
 
 
 
@@ -27,78 +29,7 @@ def dashboard_members(request):
 def dashboard_attendence(request):
     return render(request, 'Members/attendence_dashboard.html')
 
-# def check_attendance(request):
-#     return render(request, 'Members/view_attendence.html')
 
-
-
-# def check_attendance(request):
-#     search_query = request.GET.get('search', '')
-#     start_date = request.GET.get('start_date', '')
-#     end_date = request.GET.get('end_date', '')
-
-#     # Set default dates if not provided
-#     if not start_date:
-#         start_date = datetime.today().strftime('%Y-%m-01')  # First day of the current month
-#     if not end_date:
-#         end_date = datetime.today().strftime('%Y-%m-%d')  # Today's date
-
-#     # Convert strings to date objects
-#     try:
-#         start_date_obj = datetime.strptime(start_date, '%Y-%m-%d').date()
-#         end_date_obj = datetime.strptime(end_date, '%Y-%m-%d').date()
-#     except ValueError:
-#         start_date_obj = datetime.today().date().replace(day=1)
-#         end_date_obj = datetime.today().date()
-
-#     # Filter Attendance records
-#     attendance_records = Attendance.objects.filter(
-#         date__range=[start_date_obj, end_date_obj]
-#     ).select_related('member')
-
-#     # Aggregate attendance data
-#     member_attendance = {}
-#     total_present = 0
-#     total_absent = 0
-
-#     for record in attendance_records:
-#         if record.member not in member_attendance:
-#             member_attendance[record.member] = {'present': 0, 'absent': 0}
-
-#         if record.present:
-#             member_attendance[record.member]['present'] += 1
-#             total_present += 1
-#         if record.absent:
-#             member_attendance[record.member]['absent'] += 1
-#             total_absent += 1
-
-#     members = []
-#     for member, attendance in member_attendance.items():
-#         total_days = attendance['present'] + attendance['absent']
-#         present_percentage = (attendance['present'] / total_days * 100) if total_days else 0
-#         absent_percentage = 100 - present_percentage
-
-#         members.append({
-#             'name': member.name,
-#             'designation': member.designation,
-#             'present': attendance['present'],
-#             'absent': attendance['absent'],
-#             'present_percentage': present_percentage,
-#             'absent_percentage': absent_percentage,
-#         })
-
-#     context = {
-#         'members': members,
-#         'search_query': search_query,
-#         'start_date': start_date,
-#         'end_date': end_date,
-#         'total_present': total_present,
-#         'total_absent': total_absent,
-#     }
-
-
-
-#     return render(request, 'Members/view_attendence.html', context)
 
 
 
@@ -110,13 +41,13 @@ def check_attendance(request):
     start_date = request.GET.get('start_date', '')
     end_date = request.GET.get('end_date', '')
 
-    # Set default dates if not provided
+   
     if not start_date:
-        start_date = datetime.today().strftime('%Y-%m-01')  # First day of the current month
+        start_date = datetime.today().strftime('%Y-%m-01')  
     if not end_date:
-        end_date = datetime.today().strftime('%Y-%m-%d')  # Today's date
+        end_date = datetime.today().strftime('%Y-%m-%d') 
 
-    # Convert strings to date objects
+
     try:
         start_date_obj = datetime.strptime(start_date, '%Y-%m-%d').date()
         end_date_obj = datetime.strptime(end_date, '%Y-%m-%d').date()
@@ -124,31 +55,32 @@ def check_attendance(request):
         start_date_obj = datetime.today().date().replace(day=1)
         end_date_obj = datetime.today().date()
 
-    # Filter Attendance records based on date range
+
     attendance_records = Attendance.objects.filter(
         date__range=[start_date_obj, end_date_obj]
     ).select_related('member')
 
-    # Apply search filter if provided
+
     if search_query:
         attendance_records = attendance_records.filter(
             Q(member__name__icontains=search_query) | Q(member__email__icontains=search_query)
         )
 
-    # Aggregate attendance data
+
     member_attendance = {}
     total_present = 0
     total_absent = 0
 
     for record in attendance_records:
-        if record.member not in member_attendance:
-            member_attendance[record.member] = {'present': 0, 'absent': 0}
+        member = record.member
+        if member not in member_attendance:
+            member_attendance[member] = {'present': 0, 'absent': 0}
 
         if record.present:
-            member_attendance[record.member]['present'] += 1
+            member_attendance[member]['present'] += 1
             total_present += 1
         if record.absent:
-            member_attendance[record.member]['absent'] += 1
+            member_attendance[member]['absent'] += 1
             total_absent += 1
 
     members = []
@@ -166,6 +98,16 @@ def check_attendance(request):
             'absent_percentage': absent_percentage,
         })
 
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+
+        html = render_to_string('Members/view_attendence.html', {
+            'members': members,
+            'search_query': search_query,
+            'start_date': start_date,
+            'end_date': end_date,
+        }, request=request)
+        return JsonResponse({'html': html})
+
     context = {
         'members': members,
         'search_query': search_query,
@@ -176,7 +118,6 @@ def check_attendance(request):
     }
 
     return render(request, 'Members/view_attendence.html', context)
-
 
 
 
@@ -200,7 +141,7 @@ def mark_attendence(request):
                     defaults={'present': present, 'absent': absent, 'type': attendance_type}
                 )
         messages.success(request, 'Attendance saved successfully!')
-        return redirect('attendance_mark')  # Redirect to a success page or another view
+        return redirect('attendance_mark') 
 
     today = timezone.now().date()
     members = Member.objects.all()
@@ -215,12 +156,9 @@ def mark_attendence(request):
 
 
 
-
-
 def members_view(request):
     search_query = request.GET.get('search', '')
     year_filter = request.GET.get('year', '')
-
 
     query = Q()
 
@@ -231,23 +169,32 @@ def members_view(request):
               Q(designation__icontains=search_query) |
               Q(dept_degree__icontains=search_query))
     
-    
     if year_filter:
         year_start, year_end = year_filter.split('-')
         year_start = f'20{year_start}'
         year_end = f'20{year_end}'
         query &= Q(joining_date__year__gte=year_start) & Q(joining_date__year__lte=year_end)
 
-   
     members = Member.objects.filter(query)
-
-
+    
+    # Add pagination
+    paginator = Paginator(members, 10)  # Show 10 members per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
     return render(request, 'Members/view_member.html', {
-        'members': members,
+        'page_obj': page_obj,
         'search': search_query,
-
+        'year_filter': year_filter,
     })
+
+
+
+
+
+
+
+
 
 
 

@@ -29,6 +29,7 @@
             border-radius: 12px;
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
             padding: 1.5rem;
+            color: #cbd5e1 ;
         }
         .card:hover {
             transform: scale(1.03);
@@ -38,7 +39,7 @@
             transition: background-color 0.2s;
         }
         .btn:hover {
-            background-color: #2b6cb0;
+            background-color: #1D4ED8;
         }
         .card-content {
             display: flex;
@@ -58,7 +59,7 @@
         .card-content .details h3 {
             font-size: 1.25rem;
             font-weight: 700;
-            color: #2c5282;
+            color: #2c5282 ;
             margin-bottom: 0.5rem;
         }
         .card-content .details p {
@@ -72,15 +73,12 @@
             align-items: center;
             margin-top: 1rem;
         }
-        .card-content .actions a {
-            color: #4299e1;
+        .card-content  {
+            color: red;
             text-decoration: none;
             font-size: 1.25rem;
             display: flex;
             align-items: center;
-        }
-        .card-content .actions a:hover {
-            color: #2b6cb0;
         }
         .card-content .actions a i {
             transition: transform 0.2s;
@@ -117,7 +115,7 @@
             font-size: 0.875rem;
             font-weight: 600;
             color: #ffffff;
-            background-color: #a0d6f5;
+            background-color: #cbd5e1 ;
             border-radius: 12px;
             padding: 0.4rem 0.8rem;
             margin-top: 0.25rem;
@@ -237,8 +235,9 @@
             </div>
             <hr class="my-10 border border-gray-300" />
             <div id="members-container" class="space-y-6">
-                {% for member in members %}
-                <div class="bg-white shadow-sm border border-gray-200 rounded-lg p-6 card">
+                {% comment %} {% for member in members %} {% endcomment %}
+                {% for member in page_obj %}
+                <div class="bg-white shadow-sm border border-gray-200 hover:border-gray-300   rounded-lg p-6 card">
                     <div class="card-content">
                         <img src="https://via.placeholder.com/150" alt="Member Image" />
                         <div class="details">
@@ -250,10 +249,10 @@
                       
                         </div>
                         <div class="actions">
-                            <a href="#" class="hover:underline" title="Edit">
+                            <a href="#" class="hover:underline  text-blue-600 hover:text-gray-500 " title="Edit">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <a href="#" onclick="openModal('{% url 'delete_member' member.id %}'); return false;" class="text-red-600 hover:text-red-800 transition-colors" title="Delete">
+                            <a href="#" onclick="openModal('{% url 'delete_member' member.id %}'); return false;" class="text-red-600   hover:text-gray-500 transition-colors" title="Delete">
                                 <i class="fas fa-trash"></i>
                             </a>
                         </div>
@@ -273,7 +272,20 @@
                     </div>
                 </div>
             </div>
+            <!-- Pagination controls -->
+<div class="flex justify-center mt-10">
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}{% if search %}&search={{ search }}{% endif %}{% if year_filter %}&year={{ year_filter }}{% endif %}" class="px-3 py-1 border rounded-lg mx-1 bg-gray-200 hover:bg-gray-300">&laquo; Previous</a>
+        {% endif %}
+        <span class="px-3 py-1 border rounded-lg mx-1 bg-gray-200">{{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}{% if search %}&search={{ search }}{% endif %}{% if year_filter %}&year={{ year_filter }}{% endif %}" class="px-3 py-1 border rounded-lg mx-1 bg-gray-200 hover:bg-gray-300">Next &raquo;</a>
+        {% endif %}
+    </div>
+</div>
         </main>
+        
     </section>
 </body>
 </html>

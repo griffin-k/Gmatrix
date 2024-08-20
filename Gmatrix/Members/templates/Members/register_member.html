@@ -21,7 +21,7 @@
   <section class="h-screen w-3/4 p-5 absolute inset-y-0 right-0">
     {% include "Dashboard/admin_header.html" %}
     <main class="mt-5 text-black bg-white rounded-xl border border-gray-300 px-5 py-10">
-      <h1 class="mt-5 font-bold text-center text-4xl text-gray-800 mb-8">Add Member Details</h1>
+      <h1 class="mt-5 font-bold text-center text-4xl text-gray-800 mb-8">Register New Member</h1>
       <hr class="my-10 border border-gray-300" />
 
       <!-- Display success or error messages -->
@@ -156,8 +156,8 @@
           </div>
         </div>
 
-        <button type="button" id="checkButton" class="w-full rounded-xl bg-gray-500 text-white font-bold text-lg py-3 border hover:bg-green-700">
-          Add Member
+        <button type="button" id="checkButton" class="w-full rounded-xl bg-gray-600 text-white font-bold text-lg py-3 border hover:bg-blue-600">
+         Register Member
         </button>
         <button type="submit" id="hiddenSubmitButton" style="display: none;"></button>
       </form>
@@ -175,7 +175,7 @@
       const hiddenSubmitButton = document.getElementById('hiddenSubmitButton');
       let isFormValid = true;
 
-      // Function to format CNIC
+
       const formatCNIC = (value) => {
         return value.replace(/(\d{5})(\d{7})(\d{1})/, '$1-$2-$3');
       };
@@ -185,7 +185,7 @@
         return value.replace(/\D/g, '').slice(0, 11);
       };
 
-      // Function to format batch year
+
       const formatBatchYear = (input) => {
         let value = input.value.toUpperCase();
         value = value.replace(/[^A-Z0-9]/g, ''); // Remove invalid characters
@@ -195,7 +195,7 @@
         input.value = value;
       };
 
-      // Function to format roll number
+
       const formatRollNumber = (input) => {
         let value = input.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
         input.value = value;
@@ -206,22 +206,20 @@
         cnicInput.value = formatCNIC(cnicInput.value);
       });
 
-      // Event listener for phone number input formatting
+
       phoneInput.addEventListener('input', () => {
         phoneInput.value = formatPhoneNumber(phoneInput.value);
       });
 
-      // Event listener for batch year input formatting
+
       batchYearInput.addEventListener('input', () => {
         formatBatchYear(batchYearInput);
       });
 
-      // Event listener for roll number input formatting
       document.getElementById('roll_num').addEventListener('input', () => {
         formatRollNumber(document.getElementById('roll_num'));
       });
 
-      // Check CNIC and disable/enable submit button
       cnicInput.addEventListener('blur', async () => {
         const cnic = cnicInput.value.trim();
         if (cnic) {
