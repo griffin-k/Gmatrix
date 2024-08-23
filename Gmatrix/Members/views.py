@@ -1,25 +1,18 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
 from .forms import MemberForm
 from .models import Member, Attendance
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
-from django.views.decorators.http import require_http_methods
-from datetime import datetime
-from django.http import HttpResponseNotAllowed
 from django.db.models import Q
 from django.utils import timezone
 from django.contrib import messages
-from datetime import date
 from django.core.paginator import Paginator
-
 from django.shortcuts import render
-from django.utils.timezone import now
-from datetime import datetime, timedelta
+from datetime import datetime
 from django.template.loader import render_to_string
-
-
+from django.contrib.auth import logout
+from django.shortcuts import redirect
 from rest_framework import generics
 from .serializers import MemberSerializer
 
@@ -29,6 +22,8 @@ from .serializers import MemberSerializer
 def dashboard_members(request):
     return render(request, 'Members/members_dashboard.html')
 
+
+@login_required
 def dashboard_attendence(request):
     return render(request, 'Members/attendence_dashboard.html')
 
@@ -39,6 +34,9 @@ def dashboard_attendence(request):
 
 
 
+
+
+@login_required
 def check_attendance(request):
     search_query = request.GET.get('search', '')
     start_date = request.GET.get('start_date', '')
@@ -128,7 +126,7 @@ def check_attendance(request):
 
 
 
-
+@login_required
 def mark_attendence(request):
     if request.method == 'POST':
         date = request.POST.get('date')
@@ -148,7 +146,7 @@ def mark_attendence(request):
 
     today = timezone.now().date()
     active_members = Member.objects.filter(status='Active')
-    return render(request, 'Members/mark_attendence.html', {'today': today, 'members': active_members})
+    return render(request, 'Members/attendance_mark.html', {'today': today, 'members': active_members})
 
 
 
@@ -158,7 +156,7 @@ def mark_attendence(request):
 
 
 
-
+@login_required
 def members_view(request):
     search_query = request.GET.get('search', '')
     year_filter = request.GET.get('year', '')
@@ -178,7 +176,7 @@ def members_view(request):
         query &= Q(joining_date__year__gte=year_start) & Q(joining_date__year__lte=year_end)
     if status_filter:
         query &= Q(status=status_filter)
-    members = Member.objects.filter(query)
+    members = Member.objects.filter(query).order_by('id')
     paginator = Paginator(members, 10)  
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -206,7 +204,7 @@ def members_view(request):
 
 
 
-
+@login_required
 def members_register(request):
     if request.method == 'POST':
         form = MemberForm(request.POST)
@@ -226,7 +224,7 @@ def members_register(request):
 
 
 
-
+@login_required
 def edit_member(request, member_id):
     member = get_object_or_404(Member, id=member_id)
     form = MemberForm(instance=member)

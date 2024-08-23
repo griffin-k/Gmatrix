@@ -12,6 +12,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
 
+
 import os
 import sys
 sys.path.append(os.getcwd())
@@ -29,7 +30,7 @@ sys.path.append(os.getcwd())
 @login_required
 def dashboard_view(request):
     return render(request, 'Dashboard/admin_panal.html')
-
+@login_required
 def settings_view(request):
     return render(request, 'Dashboard/setting.html')
 
@@ -39,6 +40,8 @@ def settings_view(request):
 
 
 
+
+@login_required
 def generate_Attendence(request):
     api_url = 'http://127.0.0.1:8000/members_api/'
     try:
@@ -139,7 +142,7 @@ def generate_Attendence(request):
         return HttpResponse(f"Error processing PDF: {e}", status=500)
 
 
-
+@login_required
 def student_body(request):
     api_url = 'http://127.0.0.1:8000/members_api/'
     try:

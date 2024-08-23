@@ -4,6 +4,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 
+
+
 def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -16,6 +18,8 @@ def login_view(request):
             return HttpResponse('Invalid login')
     return render(request, 'Authentication/login.html')
 
+
+
 def register_view(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -25,6 +29,8 @@ def register_view(request):
         return redirect('login')
     return render(request, 'Authentication/register.html')
 
-# @login_required
-# def home_view(request):
-#     return render(request, 'Authentication/home.html')
+def logout_view(request):
+    if request.method == 'POST':
+        logout(request)
+        return redirect('login')  
+    return redirect('login')

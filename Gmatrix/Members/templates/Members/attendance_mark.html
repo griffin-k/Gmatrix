@@ -85,7 +85,7 @@
         <hr class="my-10 border border-gray-300" />
 
         <div class="form-container mb-10">
-            <form action="{% url 'attendance_mark' %}" method="POST">
+            <form action="{% url 'mark_attendance' %}" method="POST">
                 {% csrf_token %}
             
                 <div class="mb-4">
