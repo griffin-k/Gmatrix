@@ -224,6 +224,20 @@ def members_register(request):
 
 
 
+def edit_member(request, member_id):
+    member = get_object_or_404(Member, id=member_id)
+    form = MemberForm(instance=member)
+    
+    if request.method == 'POST':
+        form = MemberForm(request.POST, instance=member)
+        if form.is_valid():
+            form.save()
+            # messages.success(request, 'Member updated successfully.')
+            return redirect('members_view')
+    
+    return render(request, 'Members/edit_member.html', {'form': form, 'member': member})
+
+
 
 
 

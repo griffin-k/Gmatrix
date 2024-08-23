@@ -270,9 +270,10 @@
                       
                         </div>
                         <div class="actions">
-                            <a href="#" class="hover:underline  text-blue-600 hover:text-gray-500 " title="Edit">
+                            <a href="{% url 'edit_member' member.id %}" class="hover:underline text-blue-600 hover:text-gray-500" title="Edit">
                                 <i class="fas fa-edit"></i>
                             </a>
+                            
                             <a href="#" onclick="openModal('{% url 'delete_member' member.id %}'); return false;" class="text-red-600   hover:text-gray-500 transition-colors" title="Delete">
                                 <i class="fas fa-trash"></i>
                             </a>
