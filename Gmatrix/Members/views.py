@@ -159,33 +159,31 @@ def mark_attendence(request):
 def members_view(request):
     search_query = request.GET.get('search', '')
     year_filter = request.GET.get('year', '')
-
+    status_filter = request.GET.get('status', '')
     query = Q()
-
-    query &= (Q(name__icontains=search_query) |
-              Q(cnic__icontains=search_query) |
-              Q(phone_no__icontains=search_query) |
-              Q(email__icontains=search_query) |
-              Q(designation__icontains=search_query) |
-              Q(dept_degree__icontains=search_query))
-    
+    if search_query:
+        query &= (Q(name__icontains=search_query) |
+                  Q(cnic__icontains=search_query) |
+                  Q(phone_no__icontains=search_query) |
+                  Q(email__icontains=search_query) |
+                  Q(designation__icontains=search_query) |
+                  Q(dept_degree__icontains=search_query))
     if year_filter:
         year_start, year_end = year_filter.split('-')
         year_start = f'20{year_start}'
         year_end = f'20{year_end}'
         query &= Q(joining_date__year__gte=year_start) & Q(joining_date__year__lte=year_end)
-
+    if status_filter:
+        query &= Q(status=status_filter)
     members = Member.objects.filter(query)
-    
-    # Add pagination
-    paginator = Paginator(members, 10)  # Show 10 members per page
+    paginator = Paginator(members, 10)  
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-
     return render(request, 'Members/view_member.html', {
         'page_obj': page_obj,
         'search': search_query,
         'year_filter': year_filter,
+        'status_filter': status_filter,
     })
 
 

@@ -143,13 +143,15 @@
         function applyFilters() {
             const search = document.getElementById('search-member').value;
             const year = document.getElementById('year-filter').value;
-
+            const status = document.getElementById('status').value; 
+        
             $.ajax({
                 url: window.location.href,
                 type: 'GET',
                 data: {
                     search: search,
-                    year: year
+                    year: year,
+                    status: status  
                 },
                 success: function(response) {
                     const newContent = $(response).find('#members-container').html();
@@ -160,6 +162,7 @@
                 }
             });
         }
+        
 
         function openModal(url) {
             deleteUrl = url;
@@ -183,7 +186,7 @@
                         closeModal();
                         toastr.success('Member has been deleted.');
                         setTimeout(() => {
-                            applyFilters(); // Update the list without reloading
+                            applyFilters(); 
                         }, 1000);
                     } else {
                         toastr.error('An error occurred. Please try again.');
@@ -218,6 +221,24 @@
                     <i class="fa fa-search text-gray-500"></i>
                 </div>
             </div>
+
+            <div class="w-1/2 mx-auto mb-5">
+                <div class="flex items-center bg-gray-100 border border-gray-300 rounded-lg px-3 py-2">
+                    <select name="status" id="status" class="w-full text-md text-gray-900 bg-gray-100 border-none focus:ring-0" onchange="applyFilters()">
+                        <option value="" {% if not status_filter %}selected{% endif %} disabled>Select Status</option>
+                        <option value="Active" {% if status_filter == 'Active' %}selected{% endif %}>Active</option>
+                        <option value="Inactive" {% if status_filter == 'Inactive' %}selected{% endif %}>Inactive</option>
+                        <option value="On Warning" {% if status_filter == 'On Warning' %}selected{% endif %}>On Warning</option>
+                        <option value="Terminated" {% if status_filter == 'Terminated' %}selected{% endif %}>Terminated</option>
+                    </select>
+                </div>
+              </div>
+         
+
+
+
+
+
             <div class="w-1/2 mx-auto mb-5">
                 <div class="flex items-center bg-gray-100 border border-gray-300 rounded-lg px-3 py-2">
                     <select class="w-full text-md text-gray-900 bg-gray-100 border-none focus:ring-0" id="year-filter" onchange="applyFilters()">
