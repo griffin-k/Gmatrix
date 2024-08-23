@@ -1,4 +1,5 @@
 {% load static tailwind_tags %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,53 +7,124 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="{% static 'imgs/lgu-logo.png' %}" />
-
-    <title>Member Dashboard | LMS</title>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     {% tailwind_css %}
-
-    <script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <style>
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .dashboard-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #2c5282;
+        }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        .card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            text-align: center;
+            transition: box-shadow 0.3s, transform 0.3s;
+        }
+        .card:hover {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            transform: translateY(-5px);
+        }
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #4a90e2;
+        }
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #2c5282;
+            margin-bottom: 0.5rem;
+        }
+        .card-count {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2c5282;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #ffffff;
+            text-decoration: none;
+            text-align: center;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .button-view {
+            background-color: #4a90e2;
+        }
+        .button-remove {
+            background-color: #e53e3e;
+        }
+        .button-add {
+            background-color: #38a169;
+        }
+        .button-view:hover, .button-remove:hover {
+            transform: scale(1.05);
+        }
+    </style>
 </head>
 
-<body class="flex bg-gray-100 ">
+<body class="flex bg-gray-100">
     <aside class="h-screen w-1/4 p-5 fixed">
-        {% include 'admin_nav.html' %}
+        {% include 'Dashboard/admin_nav.html' %}
     </aside>
     <section class="h-screen w-3/4 p-5 absolute inset-y-0 right-0">
-        {% include 'admin_header.html' %}
+        {% include 'Dashboard/admin_header.html' %}
 
-        <main class="mt-5 text-white bg-white rounded-xl border border-gray-300 px-5 py-10">
-        <main class="mt-5 text-white">
-            <div class="flex-col space-y-10">
+        <main class="dashboard-container mt-3 bg-white rounded-xl border border-gray-300 shadow-md">
+            <h1 class="dashboard-title">
+                Printable Reports
+            </h1>
 
-                <div class="w-full h-52 rounded-2xl bg-gray-900 flex items-center justify-center text-3xl font-bold hover:bg-gray-800 transform transition-transform hover:scale-105 duration-500 cursor-pointer">
-                    <a href="{% url 'download_members_csv' %}" class="flex items-center justify-center w-full h-full">
-                        <img src="{% static 'imgs/view-student.png' %}" alt="" class="w-20 h-20 mr-5" />
-                        Download Members CSV
-                    </a>
+            <hr class="my-10 border border-gray-300" />
+
+            <div class="card-grid">
+                <!-- Attendance List -->
+                <div class="card">
+                    <i class="fas fa-calendar-check card-icon"></i>
+                    <div class="card-title">Attendance List</div>
+                    <a href="{% url 'generate_pdf' %}" class="button button-view">Download</a>
                 </div>
 
-                <div class="w-full h-52 rounded-2xl bg-gray-900 flex items-center justify-center text-3xl font-bold hover:bg-gray-800 transform transition-transform hover:scale-105 duration-500 cursor-pointer">
-                    <a href="{% url 'download_books_csv' %}" class="flex items-center justify-center w-full h-full">
-                        <img src="{% static 'imgs/view-books.png' %}" alt="" class="w-20 h-20 mr-5" />
-                        Download Books CSV
-                    </a>
+                <!-- Active Members -->
+                <div class="card">
+                    <i class="fas fa-users card-icon"></i>
+                    <div class="card-title">Active Members</div>
                 </div>
 
-                <div class="w-full h-52 rounded-2xl bg-gray-900 flex items-center justify-center text-3xl font-bold hover:bg-gray-800 transform transition-transform hover:scale-105 duration-500 cursor-pointer">
-                    <a href="{% url 'download_issued_books_csv' %}" class="flex items-center justify-center w-full h-full">
-                        <img src="{% static 'imgs/remove-book.png' %}" alt="" class="w-20 h-20 mr-5" />
-                        Download Issued Book Info CSV
-                    </a>
+                <!-- Student Body -->
+                <div class="card">
+                    <i class="fas fa-school card-icon"></i>
+                    <div class="card-title">Student Body</div>
                 </div>
 
+               
             </div>
         </main>
     </section>
-</main>
 </body>
 
 </html>

@@ -7,3 +7,6 @@ from django.http import HttpResponse
 @login_required
 def dashboard_view(request):
     return render(request, 'Dashboard/admin_panal.html')
+
+def settings_view(request):
+    return render(request, 'Dashboard/setting.html')
