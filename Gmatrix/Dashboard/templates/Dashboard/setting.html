@@ -96,7 +96,7 @@
 
         <main class="dashboard-container mt-3 bg-white rounded-xl border border-gray-300 shadow-md">
             <h1 class="dashboard-title">
-                Printable Reports
+                Download Sheets
             </h1>
 
             <hr class="my-10 border border-gray-300" />
@@ -106,9 +106,10 @@
                 <div class="card">
                     <i class="fas fa-calendar-check card-icon"></i>
                     <div class="card-title">Attendance List</div>
-                    <a href="{% url 'generate_pdf' %}" class="button button-view">Download</a>
+                    <a href="{% url 'Attendence_sheet' %}" class="button button-view">Download</a>
                 </div>
 
+    
                 <!-- Active Members -->
                 <div class="card">
                     <i class="fas fa-users card-icon"></i>
@@ -119,6 +120,7 @@
                 <div class="card">
                     <i class="fas fa-school card-icon"></i>
                     <div class="card-title">Student Body</div>
+                    <a href="{% url 'student_body' %}" class="button button-view">Download</a>
                 </div>
 
                

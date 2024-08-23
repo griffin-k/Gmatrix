@@ -20,6 +20,9 @@ from datetime import datetime, timedelta
 from django.template.loader import render_to_string
 
 
+from rest_framework import generics
+from .serializers import MemberSerializer
+
 
 
 @login_required
@@ -272,5 +275,13 @@ def delete_member(request, member_id):
 
 
 
+
+class MemberListCreateView(generics.ListCreateAPIView):
+    queryset = Member.objects.all()
+    serializer_class = MemberSerializer
+
+class MemberDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Member.objects.all()
+    serializer_class = MemberSerializer
 
 

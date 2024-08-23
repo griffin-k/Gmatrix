@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
 from .views import edit_member
+from .views import MemberListCreateView, MemberDetailView
 
 urlpatterns = [
     path('members_mgt/', views.dashboard_members, name='members'),
@@ -21,6 +22,17 @@ urlpatterns = [
 
      path('delete-member/<int:member_id>/', views.delete_member, name='delete_member'),
     path('check-cnic/', views.check_cnic, name='check_cnic'),
+
+
+
+######### Rest API URLS ##########
+
+##################################
+
+ 
+
+    path('members_api/', MemberListCreateView.as_view(), name='member-list-create'),
+    path('members_api/<int:pk>/', MemberDetailView.as_view(), name='member-detail'),
 
 
 ]

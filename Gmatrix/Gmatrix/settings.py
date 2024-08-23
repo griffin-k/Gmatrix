@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'Inventory',
     'Members',
     'Documentation',
+
+    'rest_framework',
     
      
     'Authentication.apps.AuthenticationConfig',
