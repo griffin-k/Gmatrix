@@ -3,12 +3,6 @@ from django.utils import timezone
 
 
 
-
-
-
-
-
-
 class Member(models.Model):
     CATEGORY_CHOICES = [
         ('Student', 'Student'),
@@ -55,6 +49,13 @@ class Member(models.Model):
         ('FA-16', 'FA-16'),
         ('SP-16', 'SP-16'),
     ]
+
+    STATUS_CHOICES = [
+        ('Active', 'Active'),
+        ('Inactive', 'Inactive'),
+        ('On Warning', 'On Warning'),
+        ('Terminated', 'Terminated'),
+    ]
     
     category = models.CharField(max_length=10, choices=CATEGORY_CHOICES)
     name = models.CharField(max_length=100)
@@ -69,9 +70,11 @@ class Member(models.Model):
     address = models.CharField(max_length=255)
     joining_date = models.DateField()
     designation = models.CharField(max_length=50, choices=DESIGNATION_CHOICES)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Inactive')
 
     def __str__(self):
         return self.name
+
 
 
 

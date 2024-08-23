@@ -130,8 +130,8 @@ def mark_attendence(request):
     if request.method == 'POST':
         date = request.POST.get('date')
         attendance_type = request.POST.get('attendance_type')
-        members = Member.objects.all()
-        for member in members:
+        active_members = Member.objects.filter(status='Active')
+        for member in active_members:
             present = request.POST.get(f'attendance[{member.id}][Present]', 'off') == 'on'
             absent = request.POST.get(f'attendance[{member.id}][Absent]', 'off') == 'on'
             if present or absent:
@@ -144,8 +144,8 @@ def mark_attendence(request):
         return redirect('attendance_mark') 
 
     today = timezone.now().date()
-    members = Member.objects.all()
-    return render(request, 'Members/mark_attendence.html', {'today': today, 'members': members})
+    active_members = Member.objects.filter(status='Active')
+    return render(request, 'Members/mark_attendence.html', {'today': today, 'members': active_members})
 
 
 
