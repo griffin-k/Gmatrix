@@ -1,0 +1,57 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="{% static 'imgs/favicon.png' %}" type="image/x-icon" />
+    <title>Support Center | LMS</title>
+    {% tailwind_css %}
+    <script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@1.6.2/dist/flowbite.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+</head>
+
+<body class="flex bg-gray-100">
+    <aside class="h-screen w-1/4 p-5 fixed">
+        {% include 'Dashboard/admin_nav.html' %}
+    </aside>
+    <section class="h-screen w-3/4 p-5 absolute inset-y-0 right-0">
+        {% include 'Dashboard/admin_header.html' %}
+        <main class="mt-5 bg-white rounded-xl border border-gray-300 px-5 py-10">
+            <h1 class="font-bold text-center text-3xl text-gray-500">Support Center</h1>
+            <hr class="my-10 border border-gray-300" />
+
+            <div class="mx-auto mt-8 p-6 bg-white border border-gray-300 rounded-lg shadow-md" style="max-width: 800px;">
+                <form action="{% url 'support_center' %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-6">
+                        <label for="request_for" class="block mb-2 text-sm font-medium text-gray-900">Request For</label>
+                        <input type="text" id="request_for" name="request_for" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                    </div>
+
+                    <div class="mb-6">
+                        <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                        <textarea id="description" name="description" rows="4" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required></textarea>
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="block mb-2 text-sm font-medium text-gray-500" for="multiple_files">Upload Snap Shot</label>
+                        <input class="block w-full text-sm text-gray-500 border border-gray-500 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" name="files[]" type="file" multiple>
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="w-full rounded-xl bg-blue-500 text-white font-bold text-lg py-3 border hover:bg-gray-500">
+                            Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </section>
+</body>
+
+</html>

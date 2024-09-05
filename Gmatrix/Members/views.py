@@ -142,7 +142,7 @@ def mark_attendence(request):
                     defaults={'present': present, 'absent': absent, 'type': attendance_type}
                 )
         messages.success(request, 'Attendance saved successfully!')
-        return redirect('attendance_mark') 
+        return redirect('app_namespace:attendance_mark') 
 
     today = timezone.now().date()
     active_members = Member.objects.filter(status='Active')

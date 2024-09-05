@@ -10,6 +10,10 @@ import requests
 from datetime import datetime
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.contrib import messages
+
 
 
 
@@ -278,7 +282,31 @@ def student_body(request):
 
 
 
-
+#################################
+# Support Center view
+#################################
+def support_center(request):
+    if request.method == "POST":
+        request_for = request.POST.get('request_for')
+        description = request.POST.get('description')
+        data = {
+            'request_for': request_for,
+            'description': description,
+            'subject': 'New form submission',
+        }
+        try:
+            response = requests.post(
+                'https://formspree.io/f/xpwanjdq',  
+                data=data,
+            )
+            if response.status_code == 200:
+                messages.success(request, "Your request has been successfully submitted!")
+            else:
+                messages.error(request, "There was an error submitting your request. Please try again later.")
+        except requests.exceptions.RequestException as e:
+            messages.error(request, f"An error occurred: {e}")
+        return redirect('support_center')
+    return render(request, 'Dashboard/support_center.html')
 
 
 
