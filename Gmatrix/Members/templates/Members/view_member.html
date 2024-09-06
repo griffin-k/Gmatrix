@@ -132,6 +132,27 @@
             color: #2b6cb0;
             margin: 0;
         }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .pagination a, .pagination span {
+            margin: 0 5px;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #1f2937;
+        }
+        .pagination a:hover {
+            background-color: #f1f5f9;
+        }
+        .pagination .current {
+            background-color: #3b82f6;
+            color: white;
+            border: 1px solid #3b82f6;
+        }
         
         
         
@@ -296,17 +317,33 @@
                 </div>
             </div>
             <!-- Pagination controls -->
-<div class="flex justify-center mt-10">
+
     <div class="pagination">
         {% if page_obj.has_previous %}
-            <a href="?page={{ page_obj.previous_page_number }}{% if search %}&search={{ search }}{% endif %}{% if year_filter %}&year={{ year_filter }}{% endif %}" class="px-3 py-1 border rounded-lg mx-1 bg-gray-200 hover:bg-gray-300">&laquo; Previous</a>
+          <a href="?page=1">&laquo; First</a>
+          <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% else %}
+          <span>&laquo; First</span>
+          <span>Previous</span>
         {% endif %}
-        <span class="px-3 py-1 border rounded-lg mx-1 bg-gray-200">{{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+        {% for num in page_obj.paginator.page_range %}
+          {% if page_obj.number == num %}
+            <span class="current">{{ num }}</span>
+          {% else %}
+            <a href="?page={{ num }}">{{ num }}</a>
+          {% endif %}
+        {% endfor %}
+
         {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}{% if search %}&search={{ search }}{% endif %}{% if year_filter %}&year={{ year_filter }}{% endif %}" class="px-3 py-1 border rounded-lg mx-1 bg-gray-200 hover:bg-gray-300">Next &raquo;</a>
+          <a href="?page={{ page_obj.next_page_number }}">Next</a>
+          <a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+        {% else %}
+          <span>Next</span>
+          <span>Last &raquo;</span>
         {% endif %}
-    </div>
-</div>
+      </div>
+
         </main>
         
     </section>

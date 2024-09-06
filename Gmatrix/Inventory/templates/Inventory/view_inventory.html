@@ -6,13 +6,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="https://i.ibb.co/RST4HvR/Untitled-design.png" />
-  <title>View item -Gmatrix</title>
+  <title>View item - Gmatrix</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
   <script src="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.js"></script>
   {% tailwind_css %}
   <style>
-    /* Add custom styles if needed */
     .modal {
       display: none; 
       position: fixed; 
@@ -22,8 +21,7 @@
       width: 100%; 
       height: 100%; 
       overflow: auto; 
-      background-color: rgb(0,0,0); 
-      background-color: rgba(0,0,0,0.4); 
+      background-color: rgba(0, 0, 0, 0.4); 
     }
     .modal-content {
       background-color: #fefefe;
@@ -38,12 +36,62 @@
       font-size: 28px;
       font-weight: bold;
     }
-    .close:hover,
-    .close:focus {
+    .close:hover, .close:focus {
       color: black;
       text-decoration: none;
       cursor: pointer;
     }
+
+    /* Custom table styling */
+    .table-container {
+      max-height: 500px;
+      overflow-y: auto;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin-top: 20px;
+    }
+    table {
+      min-width: 100%;
+      border-collapse: collapse;
+      border-radius: 0.5rem;
+      overflow: hidden;
+    }
+    th, td {
+      text-align: left;
+      padding: 12px;
+    }
+    th {
+      background-color: #d1d5db;
+      color: #6B7280;
+      border-bottom: 2px solid #e2e8f0;
+    }
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    tr:hover {
+      background-color: #f1f5f9;
+    }
+    .pagination {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+  }
+  .pagination a, .pagination span {
+      margin: 0 5px;
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      text-decoration: none;
+      color: #1f2937;
+  }
+  .pagination a:hover {
+      background-color: #f1f5f9;
+  }
+  .pagination .current {
+      background-color: #3b82f6;
+      color: white;
+      border: 1px solid #3b82f6;
+  }
   </style>
 </head>
 <body class="flex bg-gray-100">
@@ -57,33 +105,28 @@
       <hr class="my-10 border border-gray-300" />
 
       <div class="w-1/2 mx-auto mb-5">
-        <div>
-          <select id="categoryFilter" class="bg-gray-50 p-2 mt-5 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
-            <option value="all" selected>All Categories</option>
-            <option value="micro-controller">Micro-Controller</option>
-            <option value="sensor">Sensor</option>
-            <option value="soldering">Soldering</option>
-            <option value="tools">Tools</option>
-          </select>
-        </div>
+        <!-- Filters -->
+        <select id="categoryFilter" class="bg-gray-50 p-2 mt-5 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
+          <option value="all" selected>All Categories</option>
+          <option value="micro-controller">Micro-Controller</option>
+          <option value="sensor">Sensor</option>
+          <option value="soldering">Soldering</option>
+          <option value="tools">Tools</option>
+        </select>
 
-        <div>
-          <select id="statusFilter" class="bg-gray-50 p-2 mt-5 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
-            <option value="all" selected>All Statuses</option>
-            <option value="working">Working</option>
-            <option value="damage">Damage</option>
-            <option value="out_of_stock">Out of Stock</option>
-          </select>
-        </div>
+        <select id="statusFilter" class="bg-gray-50 p-2 mt-5 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
+          <option value="all" selected>All Statuses</option>
+          <option value="working">Working</option>
+          <option value="damage">Damage</option>
+          <option value="out_of_stock">Out of Stock</option>
+        </select>
 
-        <div>
-          <input type="text" id="searchBar" placeholder="Search by model..." class="bg-gray-50 mt-5 p-2 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
-        </div>
+        <input type="text" id="searchBar" placeholder="Search by model..." class="bg-gray-50 mt-5 p-2 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
       </div>
 
       <hr class="my-10 border border-gray-300" />
 
-      <div class="overflow-x-auto">
+      <div class="table-container overflow-x-auto">
         <table id="productsTable" class="min-w-full divide-y divide-gray-200">
           <thead class="bg-gray-50">
             <tr>
@@ -101,6 +144,32 @@
             <!-- Table rows will be injected here by JavaScript -->
           </tbody>
         </table>
+      </div>
+       <!-- Pagination Controls -->
+       <div class="pagination">
+        {% if page_obj.has_previous %}
+          <a href="?page=1">&laquo; First</a>
+          <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% else %}
+          <span>&laquo; First</span>
+          <span>Previous</span>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+          {% if page_obj.number == num %}
+            <span class="current">{{ num }}</span>
+          {% else %}
+            <a href="?page={{ num }}">{{ num }}</a>
+          {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+          <a href="?page={{ page_obj.next_page_number }}">Next</a>
+          <a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+        {% else %}
+          <span>Next</span>
+          <span>Last &raquo;</span>
+        {% endif %}
       </div>
     </main>
   </section>
@@ -136,45 +205,33 @@
         const search = searchBar.value;
     
         fetch(`/api/products/?category=${category}&status=${status}&search=${search}`)
-          .then(response => {
-            if (!response.ok) {
-              throw new Error('Network response was not ok');
-            }
-            return response.json();
-          })
-          .then(data => {
-            updateTable(data);
-          })
-          .catch(error => {
-            console.error('Error fetching products:', error);
-          });
+          .then(response => response.json())
+          .then(data => updateTable(data))
+          .catch(error => console.error('Error fetching products:', error));
       }
     
       function updateTable(products) {
         productsTable.innerHTML = '';
-    
         if (products.length === 0) {
           productsTable.innerHTML = '<tr><td colspan="8" class="px-6 py-4 text-center text-gray-500">No products available</td></tr>';
           return;
         }
-    
+
         products.forEach(product => {
           const row = document.createElement('tr');
-    
           row.innerHTML = `
-            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${product.id}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${product.category}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${product.model}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${product.status}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${product.quantity}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${product.purchase_date}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${product.price}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-              <a  class="text-indigo-600 hover:text-indigo-900">Edit</a> |
-              <a  class="text-red-600 hover:text-red-900">Delete</a>
+            <td class="px-6 py-4 text-sm font-medium text-gray-900">${product.id}</td>
+            <td class="px-6 py-4 text-sm text-gray-500">${product.category}</td>
+            <td class="px-6 py-4 text-sm text-gray-500">${product.model}</td>
+            <td class="px-6 py-4 text-sm text-gray-500">${product.status}</td>
+            <td class="px-6 py-4 text-sm text-gray-500">${product.quantity}</td>
+            <td class="px-6 py-4 text-sm text-gray-500">${product.purchase_date}</td>
+            <td class="px-6 py-4 text-sm text-gray-500">${product.price}</td>
+            <td class="px-6 py-4 text-sm font-medium">
+              <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a> |
+              <a href="#" class="text-red-600 hover:text-red-900">Delete</a>
             </td>
           `;
-    
           productsTable.appendChild(row);
         });
       }
@@ -186,7 +243,6 @@
       // Initial load
       fetchProducts();
     });
-    
   </script>
 </body>
 </html>

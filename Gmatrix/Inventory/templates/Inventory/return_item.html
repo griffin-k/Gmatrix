@@ -1,0 +1,201 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="https://i.ibb.co/RST4HvR/Untitled-design.png" />
+  <title>Issued Items - Gmatrix</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.js"></script>
+  {% tailwind_css %}
+  <style>
+    .dialog-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.3);
+        z-index: 999;
+    }
+    .dialog {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        width: 300px;
+        text-align: center;
+    }
+    .table-container {
+        max-height: 500px;
+        overflow-y: auto;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+    }
+    table {
+        min-width: 100%;
+        border-collapse: collapse;
+        border-radius: 0.5rem;
+        overflow: hidden;
+    }
+    th, td {
+        text-align: left;
+        padding: 12px;
+    }
+    th {
+        background-color: #d1d5db;
+        color: #6B7280; 
+        border-bottom: 2px solid #e2e8f0;
+    }
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+    tr:hover {
+        background-color: #f1f5f9;
+    }
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    .pagination a, .pagination span {
+        margin: 0 5px;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        text-decoration: none;
+        color: #1f2937;
+    }
+    .pagination a:hover {
+        background-color: #f1f5f9;
+    }
+    .pagination .current {
+        background-color: #3b82f6;
+        color: white;
+        border: 1px solid #3b82f6;
+    }
+  </style>
+</head>
+<body class="flex bg-gray-100">
+  <aside class="h-screen w-1/4 p-5 fixed">
+    {% include "Dashboard/admin_nav.html" %}
+  </aside>
+  <section class="h-screen w-3/4 p-5 absolute inset-y-0 right-0">
+    {% include "Dashboard/admin_header.html" %}
+    <main class="mt-5 text-black bg-white rounded-xl border border-gray-300 px-5 py-10">
+      <h1 class="mt-5 font-bold text-center text-4xl text-gray-800 mb-8">Issued Items</h1>
+      <hr class="my-10 border border-gray-300" />
+
+      <!-- Display success or error messages -->
+      {% if messages %}
+        <div class="mb-4">
+          {% for message in messages %}
+            <div class="p-4 mb-4 text-sm text-white bg-green-500 rounded-lg" role="alert">
+              <span class="font-medium">{{ message }}</span>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <!-- Table to display issued items -->
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col" class="text-center">Student Name</th>
+              <th scope="col "class="text-center">Component Name</th>
+              <th scope="col" class="text-center">Issue Date</th>
+              <th scope="col" class="text-center">Return Date</th>
+              <th scope="col" class="text-center">Roll No</th>
+              <th scope="col" class="text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in page_obj %}
+              <tr>
+                <td class="text-gray-700 text-md text-center">{{ item.name }}</td>
+                <td class="text-gray-700 text-md text-center">{{ item.component_name }}</td>
+                <td class="text-gray-700 text-md text-center">{{ item.issue_date }}</td>
+                <td class="text-gray-700 text-md text-center">{{ item.return_date }}</td>
+                <td class="text-gray-700 text-md text-center">{{ item.reg_num }}</td>
+                <td>
+                  <button class="text-red-600 hover:text-red-800" onclick="showConfirmDialog('{{ item.id }}')">Return</button>
+                </td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td colspan="6" class="text-center text-gray-500">No items issued yet.</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination Controls -->
+      <div class="pagination">
+        {% if page_obj.has_previous %}
+          <a href="?page=1">&laquo; First</a>
+          <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% else %}
+          <span>&laquo; First</span>
+          <span>Previous</span>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+          {% if page_obj.number == num %}
+            <span class="current">{{ num }}</span>
+          {% else %}
+            <a href="?page={{ num }}">{{ num }}</a>
+          {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+          <a href="?page={{ page_obj.next_page_number }}">Next</a>
+          <a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+        {% else %}
+          <span>Next</span>
+          <span>Last &raquo;</span>
+        {% endif %}
+      </div>
+
+    </main>
+  </section>
+
+  <!-- Confirmation Dialog -->
+  <div id="dialog-overlay" class="dialog-overlay"></div>
+  <div id="dialog" class="dialog">
+    <p class="text-lg mb-4">Are you sure you want to return this item?</p>
+    <form id="return-form" method="POST">
+      {% csrf_token %}
+      <div class="flex justify-center gap-4">
+        <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-lg">Confirm</button>
+        <button type="button" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg" onclick="hideConfirmDialog()">Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    function showConfirmDialog(itemId) {
+        document.getElementById('dialog').style.display = 'block';
+        document.getElementById('dialog-overlay').style.display = 'block';
+        document.getElementById('return-form').action = `/return-item/${itemId}/`;  // Set the form action URL
+    }
+    
+    function hideConfirmDialog() {
+        document.getElementById('dialog').style.display = 'none';
+        document.getElementById('dialog-overlay').style.display = 'none';
+    }
+  </script>
+</body>
+</html>
