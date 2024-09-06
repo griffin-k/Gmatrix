@@ -16,7 +16,6 @@ from django.contrib import messages
 
 
 
-
 import os
 import sys
 sys.path.append(os.getcwd())
@@ -307,11 +306,6 @@ def support_center(request):
             messages.error(request, f"An error occurred: {e}")
         return redirect('support_center')
     return render(request, 'Dashboard/support_center.html')
-
-
-
-
-
 
 
 

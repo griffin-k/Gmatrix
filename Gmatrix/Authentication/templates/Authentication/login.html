@@ -3,25 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <link rel="icon" href="https://i.ibb.co/RST4HvR/Untitled-design.png" />
+    <title>Login -Gmatrix</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #3B82F6;
+        }
+        .input-focus:focus {
+            border-color: #4f46e5;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(100, 116, 139, 0.1);
+        }
+        .btn-blue {
+            background-color: #3B82F6;
+            transition: background-color 0.3s;
+        }
+        .btn-blue:hover {
+            background-color: #6B7280;
+        }
+        .card {
+            height: 100vh;
+            border-top-left-radius: 3rem; 
+            border-bottom-left-radius: 3rem; 
+            position: relative;
+            background-color: white;
+        }
+     
+    </style>
 </head>
-<body class="bg-gray-100 flex justify-center items-center h-screen">
-    <div class="bg-white p-8 rounded-lg shadow-md w-96">
-        <h2 class="text-2xl font-bold mb-4">Login</h2>
-        <form method="post">
-            {% csrf_token %}
-            <div class="mb-4">
-                <label for="username" class="block text-gray-700">Username</label>
-                <input type="text" name="username" id="username" class="w-full p-2 border border-gray-300 rounded mt-1">
+<body class="flex h-screen overflow-hidden">
+    <!-- Flex Container -->
+    <div class="flex w-full h-full">
+        <!-- Left Side: Image Box -->
+        <div class="flex-3">
+            <img src="https://i.ibb.co/DzrKLc1/GMATRIX.png" alt="Background Image" class="w-full h-full object-cover">
+        </div>
+    
+        <!-- Right Side: Login Box -->
+        <div class="flex-1 card flex items-center justify-center bg-gray-500 ">
+            <div class="bg-white p-8 rounded-lg  w-full main-card max-w-sm">
+                <h2 class="text-3xl font-semibold mb-6 text-gray-800">Login</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-5">
+                        <label for="username" class="block text-gray-600 text-sm font-medium">Username</label>
+                        <input type="text" name="username" id="username" class="input-focus w-full p-3 border border-gray-300 rounded mt-1 text-gray-800">
+                    </div>
+                    <div class="mb-5">
+                        <label for="password" class="block text-gray-600 text-sm font-medium">Password</label>
+                        <input type="password" name="password" id="password" class="input-focus w-full p-3 border border-gray-300 rounded mt-1 text-gray-800">
+                    </div>
+                    <button type="submit" class="btn-blue text-white p-3 rounded w-full text-center font-semibold">Login</button>
+                </form>
+                <p class="mt-6 text-gray-600 text-center text-sm">Don't have an account? <a href="{% url 'register' %}" class="text-blue-600 hover:underline">Register here</a></p>
+                <p class="mt-6 text-gray-600 text-center text-sm">Crafted with 💙 by Griffin</p>
+        
             </div>
-            <div class="mb-4">
-                <label for="password" class="block text-gray-700">Password</label>
-                <input type="password" name="password" id="password" class="w-full p-2 border border-gray-300 rounded mt-1">
-            </div>
-            <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded">Login</button>
-        </form>
-        <p class="mt-4">Don't have an account? <a href="{% url 'register' %}" class="text-blue-500">Register here</a></p>
+           
+        </div>
+    </div>
+    
+        
     </div>
 </body>
 </html>

@@ -30,14 +30,6 @@ def dashboard_attendence(request):
     return render(request, 'Members/attendence_dashboard.html')
 
 
-
-
-
-
-
-
-
-
 @login_required
 def check_attendance(request):
     search_query = request.GET.get('search', '')
