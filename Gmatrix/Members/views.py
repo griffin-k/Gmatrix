@@ -10,12 +10,11 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from django.shortcuts import render
 from datetime import datetime
-from django.template.loader import render_to_string
-from django.contrib.auth import logout
 from django.shortcuts import redirect
 from rest_framework import generics
 from .serializers import AttendanceSerializer
-
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from .serializers import MemberSerializer
 
 
@@ -197,19 +196,13 @@ def members_register(request):
     if request.method == 'POST':
         form = MemberForm(request.POST)
         if form.is_valid():
-            print("Form is valid")
             form.save()
-            print("Form saved successfully")
-            return redirect('members_view')  
+            return redirect(f"{reverse('members_view')}?success=true")  
         else:
-            print("Form is not valid")
-            print(form.errors)  
+            print(form.errors)
     else:
-        print("Received GET request")
         form = MemberForm()
-
     return render(request, 'Members/register_member.html', {'form': form})
-
 
 
 @login_required
@@ -221,19 +214,10 @@ def edit_member(request, member_id):
         form = MemberForm(request.POST, instance=member)
         if form.is_valid():
             form.save()
-            # messages.success(request, 'Member updated successfully.')
-            return redirect('members_view')
+            messages.success(request, 'Member updated successfully.')
+            return redirect(f"{reverse('edit_member', kwargs={'member_id': member.id})}?success=true")
     
     return render(request, 'Members/edit_member.html', {'form': form, 'member': member})
-
-
-
-
-
-
-
-
-
 
 
 

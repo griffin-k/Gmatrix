@@ -24,18 +24,6 @@
     <main class="mt-5 text-black bg-white rounded-xl border border-gray-300 px-5 py-10">
       <h1 class="mt-5 font-bold text-center text-4xl text-gray-800 mb-8">Edit Member</h1>
       <hr class="my-10 border border-gray-300" />
-
-      <!-- Display success or error messages -->
-      {% if messages %}
-        <div class="mb-4">
-          {% for message in messages %}
-            <div class="p-4 mb-4 text-sm text-white bg-green-500 rounded-lg dark:bg-green-800 dark:text-green-300" role="alert">
-              <span class="font-medium">{{ message }}</span>
-            </div>
-          {% endfor %}
-        </div>
-      {% endif %}
-
       <form id="memberForm" action="{% url 'edit_member' member.id %}" method="POST">
         {% csrf_token %}
         <div class="w-1/2 mx-auto">
@@ -136,12 +124,12 @@
             <input type="text" placeholder="Robotics Lab Old Building" name="address" value="{{ member.address }}" required
               class="bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
           </div>
-{% comment %} 
-          <div>
+
+      <div>
             <label class="block mb-2 text-sm font-medium text-gray-900">Joining Date</label>
             <input type="date" name="joining_date" value="{{ member.joining_date }}" required
               class="bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
-          </div> {% endcomment %}
+          </div>  
 
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-900">Designation</label>
@@ -175,6 +163,25 @@
       </form>
     </main>
   </section>
+
+
+
+
+
+  {% if request.GET.success %}
+  <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        Toastify({
+          text: "Member updated successfully.",
+          duration: 3000,
+          backgroundColor: "green",
+        }).showToast();
+      });
+  </script>
+  {% endif %}
+
+
+
 
   <!-- JavaScript to handle input formatting -->
   <script>
