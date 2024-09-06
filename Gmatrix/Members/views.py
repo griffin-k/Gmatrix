@@ -14,6 +14,8 @@ from django.template.loader import render_to_string
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 from rest_framework import generics
+from .serializers import AttendanceSerializer
+
 from .serializers import MemberSerializer
 
 
@@ -142,7 +144,7 @@ def mark_attendence(request):
                     defaults={'present': present, 'absent': absent, 'type': attendance_type}
                 )
         messages.success(request, 'Attendance saved successfully!')
-        return redirect('app_namespace:attendance_mark') 
+        return redirect('attendance_mark') 
 
     today = timezone.now().date()
     active_members = Member.objects.filter(status='Active')
@@ -281,5 +283,9 @@ class MemberListCreateView(generics.ListCreateAPIView):
 class MemberDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Member.objects.all()
     serializer_class = MemberSerializer
+
+class AttendanceListCreateView(generics.ListCreateAPIView):
+    queryset = Attendance.objects.all()
+    serializer_class = AttendanceSerializer
 
 

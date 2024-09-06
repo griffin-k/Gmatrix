@@ -1,0 +1,145 @@
+{% load static tailwind_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="{% static 'imgs/lgu-logo.png' %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.js"></script>
+  {% tailwind_css %}
+</head>
+<body class="flex bg-gray-100">
+  <aside class="h-screen w-1/4 p-5 fixed">
+    {% include "Dashboard/admin_nav.html" %}
+  </aside>
+  <section class="h-screen w-3/4 p-5 absolute inset-y-0 right-0">
+    {% include "Dashboard/admin_header.html" %}
+    <main class="mt-5 text-black bg-white rounded-xl border border-gray-300 px-5 py-10">
+      <h1 class="mt-5 font-bold text-center text-4xl text-gray-800 mb-8">Issue Component</h1>
+      <hr class="my-10 border border-gray-300" />
+
+      <!-- Display success or error messages -->
+      {% if messages %}
+        <div class="mb-4">
+          {% for message in messages %}
+            <div class="p-4 mb-4 text-sm text-white bg-green-500 rounded-lg" role="alert">
+              <span class="font-medium">{{ message }}</span>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <!-- Form for issuing a component -->
+      <form method="POST" action="{% url 'issue_component' %}">
+        {% csrf_token %}
+       
+        <div class="grid gap-6 mb-6 md:grid-cols-2">
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-900">Student Name</label>
+            <input type="text" placeholder="Karimullah" name="name" required
+              class="bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-900">CNIC</label>
+            <input type="text" placeholder="35201-1234567-8" name="cnic" required id="cnicInput"
+              class="bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-900">Phone Number</label>
+            <input type="text" placeholder="03009410503" minlength="11" maxlength="11" name="phone_no" required
+              class="bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-900">Email</label>
+            <input type="email" placeholder="fa21-bscs-342@lgu.edu.pk" name="email" required
+              class="bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-900">Registration Number</label>
+            <input type="text" id="reg_num" placeholder="FA-21-BSCS-342" name="reg_num" required
+              class="bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-900">Department</label>
+            <select id="department" name="department"
+              class="bg-gray-50 p-2 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
+              <option selected disabled>Select</option>
+              <option value="Computer Science">Computer Science</option>
+              <option value="Software Engineering">Software Engineering</option>
+              <option value="Information Technology">Information Technology</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-900">Batch</label>
+            <select id="batch" name="batch"
+              class="bg-gray-50 p-2 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
+              <option selected disabled>Select</option>
+              <option value="SP-25">SP-25</option>
+              <option value="FA-25">FA-25</option>
+              <option value="SP-24">SP-24</option>
+              <option value="FA-24">FA-24</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-900">Address</label>
+            <input type="text" placeholder="Robotics Lab Old Building" name="address" required
+              class="bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-900">Component Name</label>
+            <input type="text" placeholder="Enter Component Name" name="component_name" required
+              class="bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-900">Issue Date</label>
+            <input type="date" name="issue_date" required
+              class="bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-900">Return Date</label>
+            <input type="date" name="return_date" required
+              class="bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
+          </div>
+        </div>
+
+        <button type="submit" class="w-full rounded-xl bg-gray-600 text-white font-bold text-lg py-3 border hover:bg-blue-600">
+         Issue Component
+        </button>
+      </form>
+    </main>
+  </section>
+
+  <!-- JavaScript to handle input formatting -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const cnicInput = document.getElementById('cnicInput');
+      const phoneInput = document.querySelector('input[name="phone_no"]');
+      const regNumInput = document.getElementById('reg_num');
+
+      const formatCNIC = (value) => value.replace(/(\d{5})(\d{7})(\d{1})/, '$1-$2-$3');
+      const formatPhoneNumber = (value) => value.replace(/\D/g, '').slice(0, 11);
+
+      cnicInput.addEventListener('input', () => {
+        cnicInput.value = formatCNIC(cnicInput.value);
+      });
+
+      phoneInput.addEventListener('input', () => {
+        phoneInput.value = formatPhoneNumber(phoneInput.value);
+      });
+    });
+  </script>
+</body>
+</html>

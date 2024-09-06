@@ -34,6 +34,7 @@
         }
         .card-icon {
             font-size: 2.5rem;
+            font-weight: 600;
             margin-bottom: 1rem;
             color: #3B82F6;
         }
@@ -76,19 +77,19 @@
 <body class="bg-gray-100">
     <div class="card-grid mt-5">
         <div class="card">
-            <p class="card-icon">78</p>
-            <p class="card-count">Total Students</p>
+            <p class="card-icon" id="total-students">0</p>
+            <p class="card-count">Total Members</p>
         </div>
         <div class="card">
-            <p class="card-icon">78</p>
+            <p class="card-icon" id="active">0</p>
+            <p class="card-count">Active Members</p>
+        </div>
+        <div class="card">
+            <p class="card-icon" id="present-today">0</p>
             <p class="card-count">Present Today</p>
         </div>
         <div class="card">
-            <p class="card-icon">78</p>
-            <p class="card-count">On Warning</p>
-        </div>
-        <div class="card">
-            <p class="card-icon">78</p>
+            <p class="card-icon" id="terminated">0</p>
             <p class="card-count">Terminated</p>
         </div>
     </div>
@@ -105,69 +106,103 @@
 
         <div class="card-grid mt-5">
             <div class="card">
-                <button type="button" class="text-white bg-blue-500 hover:bg-blue-600  font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2">
+                <a  href="{% url 'attendance_mark' %}"  class="text-white bg-blue-500 hover:bg-blue-600  font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2">
                     <p class="px-2">Mark Attendance</p>
                     <svg class="w-5 h-5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
                     </svg>
-                </button>
+                </a>
             </div>
 
             <div class="card">
-                <button type="button" class="text-white bg-blue-500 hover:bg-blue-600  font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2">
+                <a  href="{% url 'members_register' %}"  class="text-white bg-blue-500 hover:bg-blue-600  font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2">
                     <p class="px-2">ADD Members</p>
                     <svg class="w-5 h-5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
                     </svg>
-                </button>
+                </a>
             </div>
 
 
 
             <div class="card">
-                <button type="button" class="text-white bg-blue-500 hover:bg-blue-600  font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2">
+                <a  href="{% url 'documentation_dashboard' %}"  class="text-white bg-blue-500 hover:bg-blue-600  font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2">
                     <p class="px-2">Update Members</p>
                     <svg class="w-5 h-5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
                     </svg>
-                </button>
+                </a>
             </div>
 
 
             <div class="card">
-                <button type="button" class="text-white bg-blue-500 hover:bg-blue-600  font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2">
+                <a  href="{% url 'attendance_view' %}"  class="text-white bg-blue-500 hover:bg-blue-600  font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2">
                     <p class="px-2">View Attendance</p>
                     <svg class="w-5 h-5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
                     </svg>
-                </button>
+                </a>
             </div>
 
 
             <div class="card">
-                <button type="button" class="text-white bg-blue-500 hover:bg-blue-600  font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2">
+                <a  href="{% url 'members_view' %}"  class="text-white bg-blue-500 hover:bg-blue-600  font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2">
                     <p class="px-2">View Members</p>
                     <svg class="w-5 h-5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
                     </svg>
-                </button>
+                </a>
             </div>
 
 
             <div class="card">
-                <button type="button" class="text-white bg-blue-500 hover:bg-blue-600  font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2">
+                <a  href="{% url 'documentation_dashboard' %}"  class="text-white bg-blue-500 hover:bg-blue-600  font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2">
                     <p class="px-2">Documentation</p>
                     <svg class="w-5 h-5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
                     </svg>
-                </button>
+                </a>
             </div>
 
 
 
            
     </main>
+    <script>
+        async function fetchData() {
+            try {
+                const attendanceResponse = await fetch('http://127.0.0.1:8000/attendances/');
+                const attendanceData = await attendanceResponse.json();
+                const membersResponse = await fetch('http://127.0.0.1:8000/members_api/');
+                const membersData = await membersResponse.json();
+                const today = new Date();
+                const year = today.getFullYear();
+                const month = String(today.getMonth() + 1).padStart(2, '0'); 
+                const day = String(today.getDate()).padStart(2, '0');
+                const formattedToday = `${year}-${month}-${day}`;
+                console.log('Today\'s Date:', formattedToday); // Log today's date
+                const presentTodayData = attendanceData.filter(item => item.date === formattedToday && item.present);
+                const presentMemberIds = presentTodayData.map(item => item.member);
+                const presentMembersCount = membersData
+                    .filter(member => presentMemberIds.includes(member.id)).length;
+                const totalMembers = membersData.length;
+                const active = membersData.filter(member => member.status === 'Active').length;
+                const terminated = membersData.filter(member => member.status === 'Terminated').length;
+                document.getElementById('total-students').textContent = totalMembers;
+                document.getElementById('present-today').textContent = presentMembersCount;
+                document.getElementById('active').textContent = active;
+                document.getElementById('terminated').textContent = terminated;
+        
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+        fetchData();
+        
+    </script>
 
+
+    {% comment %} dummy data for testing {% endcomment %}
     <script>
         var ctxDoughnut = document.getElementById('doughnutChart').getContext('2d');
         var doughnutChart = new Chart(ctxDoughnut, {
@@ -224,6 +259,6 @@
                 maintainAspectRatio: false
             }
         });
-    </script>
+ </script>
 </body>
 </html>
