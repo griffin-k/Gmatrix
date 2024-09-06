@@ -87,11 +87,13 @@
             stroke-width: 8;
         }
         .donut-segment-bg {
-            stroke: #e2e8f0;
+            stroke: red;
         }
         .donut-segment-fill {
-            stroke: #3182ce;
+            stroke: #3B82F6;
         }
+
+        
     </style>
 </head>
 
@@ -134,10 +136,10 @@
                 <!-- Attendance Cards -->
                 <div class="space-y-6">
                     {% for member in members %}
-                    <div class="card bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex items-center space-x-4">
+                    <div class="card bg-white border border-gray-200 rounded-lg h-32 shadow-lg p-4 flex items-center space-x-4">
                         <!-- Content on the left side -->
                         <div class="flex-shrink-0">
-                            <img src="https://via.placeholder.com/100" alt="{{ member.name }}" class="w-24 h-24 rounded-full object-cover border-4 border-blue-500" />
+                            <img src="https://i.ibb.co/RST4HvR/Untitled-design.png" alt="{{ member.name }}" class="w-24 h-24 rounded-full " />
                         </div>
                         <div class="flex-grow flex flex-col space-y-2">
                             <div class="details">
@@ -145,25 +147,61 @@
                                 {% comment %} <p class="designation text-sm text-gray-500">Designation: {{ member.designation }}</p> {% endcomment %}
                             </div>
                             <div class="flex space-x-4">
-                                <p class="text-lg text-gray-700">Present: <span class="font-semibold text-green-600">{{ member.present }}</span></p>
+                                <p class="text-lg text-gray-700">Present: <span class="font-semibold text-blue-500">{{ member.present }}</span></p>
                                 <p class="text-lg text-gray-700">Absent: <span class="font-semibold text-red-600">{{ member.absent }}</span></p>
                             </div>
                         </div>
                         <!-- Donut Chart on the right side -->
-                        <div class="chart-container w-16 h-16 flex-shrink-0">
+                      <div class="chart-container w-28 h-28 flex-shrink-0">
                             <!-- Donut Chart -->
                             <svg viewBox="0 0 32 32" class="w-full h-full transform rotate-[-90deg]">
-                                <circle class="donut-segment donut-segment-bg" cx="16" cy="16" r="14" stroke="#e2e8f0"/>
-                                <circle class="donut-segment donut-segment-fill"
-                                    stroke-dasharray="{{ member.present_percentage }} {{ member.absent_percentage }}"
-                                    cx="16" cy="16" r="14" stroke="#3182ce"/>
-                            </svg>
+                              
+                            <circle class="donut-segment donut-segment-bg" cx="16" cy="16" r="14" stroke="#e2e8f0"/>
+                            
+                            <!-- Filled Segment with Gradient and Animation -->
+                            <circle class="donut-segment donut-segment-fill"
+                                stroke-dasharray="{{ member.present_percentage }} {{ member.absent_percentage }}"
+                                cx="16" cy="16" r="14" stroke-width="3"
+                                stroke="url(#gradient)" stroke-linecap="round"
+                                style="transition: stroke-dasharray 0.8s ease-out;"/>
+
+                                <defs>
+                                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#63b3ed;stop-opacity:1"/>
+                                        <stop offset="100%" style="stop-color:#3182ce;stop-opacity:1"/>
+                                    </linearGradient>
+                                </defs>
+
+                            </svg> 
+                            <div class="absolute inset-0 flex items-center justify-center text-sm font-bold text-gray-600">
+                                {{ member.present_percentage }}%
+                            </div>
                         </div>
-                    </div>
+                    </div> 
                     {% endfor %}
                 </div>
+                <div class="mt-6">
+                <nav class="flex justify-center">
+                    {% if members.has_previous %}
+                    <a href="?page={{ members.previous_page_number }}&search={{ search_query }}&start_date={{ start_date }}&end_date={{ end_date }}" class="px-3 py-1 bg-blue-500 text-white rounded-md">Previous</a>
+                    {% else %}
+                    <span class="px-3 py-1 bg-gray-200 text-gray-500 rounded-md">Previous</span>
+                    {% endif %}
+            
+                    <div>
+                        <span class="px-3 py-1 ">Page {{ members.number }} of {{ members.paginator.num_pages }}</span>
+                    </div>
+            
+                    {% if members.has_next %}
+                    <a href="?page={{ members.next_page_number }}&search={{ search_query }}&start_date={{ start_date }}&end_date={{ end_date }}" class="px-3 py-1 bg-blue-500 text-white rounded-md">Next</a>
+                    {% else %}
+                    <span class="px-3 py-1 bg-gray-200 text-gray-500 rounded-md">Next</span>
+                    {% endif %}
+                </nav>
+            </div>
             </main>
+            
         </section>
-    </section>
+
 </body>
 </html>

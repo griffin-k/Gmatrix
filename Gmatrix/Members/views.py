@@ -101,25 +101,19 @@ def check_attendance(request):
             'absent_percentage': absent_percentage,
         })
 
-    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-
-        html = render_to_string('Members/view_attendence.html', {
-            'members': members,
-            'search_query': search_query,
-            'start_date': start_date,
-            'end_date': end_date,
-        }, request=request)
-        return JsonResponse({'html': html})
+    paginator = Paginator(members, 10)  # Show 10 members per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
     context = {
-        'members': members,
+        'members': page_obj,  # Pass the paginated page object to the template
         'search_query': search_query,
         'start_date': start_date,
         'end_date': end_date,
         'total_present': total_present,
         'total_absent': total_absent,
+        'page_obj': page_obj,  # Additional context for page navigation
     }
-
     return render(request, 'Members/view_attendence.html', context)
 
 
