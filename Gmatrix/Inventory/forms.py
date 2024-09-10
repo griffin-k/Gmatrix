@@ -9,8 +9,6 @@ class ProductForm(forms.ModelForm):
         fields = ['category', 'model', 'status', 'quantity', 'purchase_date', 'price']
 
 
-
-
 class ComponentIssueForm(forms.ModelForm):
     class Meta:
         model = ComponentIssue

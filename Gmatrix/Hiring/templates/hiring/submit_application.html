@@ -1,0 +1,170 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="https://i.ibb.co/RST4HvR/Untitled-design.png" />
+  <title>Member Application - Gmatrix</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.js"></script>
+  {% tailwind_css %}
+</head>
+<body class="flex bg-gray-100">
+  <aside class="h-screen w-1/4 p-5 fixed">
+    {% include "Dashboard/admin_nav.html" %}
+  </aside>
+  <section class="h-screen w-3/4 p-5 absolute inset-y-0 right-0">
+    {% include "Dashboard/admin_header.html" %}
+    <main class="mt-5 text-black bg-white rounded-xl border border-gray-300 px-5 py-10">
+      <h1 class="mt-5 font-bold text-center text-4xl text-gray-800 mb-8">Member Application</h1>
+      <hr class="my-10 border border-gray-300" />
+
+      <!-- Application Form -->
+      <form id="memberApplicationForm" action="" method="POST">
+        {% csrf_token %}
+        <div class="grid gap-6 mb-6 md:grid-cols-2">
+          
+          <!-- Member Name -->
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-900">Member Name</label>
+            <input type="text" placeholder="Karimullah" name="name" id="name" value="{{ form.name.value|default_if_none:'' }}" required
+              class="bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
+            <div class="text-red-500">{{ form.name.errors }}</div>
+          </div>
+
+          <!-- CNIC -->
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-900">CNIC</label>
+            <input type="text" placeholder="35201-1234567-8" name="cnic" id="cnicInput" value="{{ form.cnic.value|default_if_none:'' }}" required
+              class="bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
+            <div class="text-red-500">{{ form.cnic.errors }}</div>
+          </div>
+
+          <!-- Phone Number -->
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-900">Phone Number</label>
+            <input type="text" placeholder="03009410503" minlength="11" maxlength="11" name="phone_no" id="phoneInput" value="{{ form.phone_no.value|default_if_none:'' }}" required
+              class="bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
+            <div class="text-red-500">{{ form.phone_no.errors }}</div>
+          </div>
+
+          <!-- Email -->
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-900">Email</label>
+            <input type="email" placeholder="fa21-bscs-342@lgu.edu.pk" name="email" id="email" value="{{ form.email.value|default_if_none:'' }}" required
+              class="bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
+            <div class="text-red-500">{{ form.email.errors }}</div>
+          </div>
+
+          <!-- Registration Number (Concatenated) -->
+          <div id="reg_num">
+            <input type="hidden" id="reg_num_concat" name="reg_num" value="{{ form.reg_num.value|default_if_none:'' }}" />
+            <label class="block mb-2 text-sm font-medium text-gray-900">Registration Number</label>
+            <div class="flex items-center">
+              <input id="batch_year" type="text" placeholder="FA-2021" name="batch_year" oninput="formatBatchYear(this)"
+                class="flex-1 mr-2 bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
+              <select id="dept_degree" name="dept_degree" required
+                class="flex-1 mr-2 p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
+                <option value="" disabled selected>Select Degree</option>
+                <option value="BSCS">BSCS</option>
+                <option value="BSIT">BSIT</option>
+                <option value="BSSE">BSSE</option>
+              </select>
+              <input id="roll_num" type="text" placeholder="342" name="roll_num" oninput="formatRollNumber(this)"
+                class="flex-1 bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
+            </div>
+          </div>
+
+          <!-- Department -->
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-900">Department</label>
+            <select id="department" name="department" required
+              class="bg-gray-50 p-2 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
+              <option selected disabled>Select</option>
+              <option value="Computer Science">Computer Science</option>
+              <option value="Software Engineering">Software Engineering</option>
+              <option value="Information Technology">Information Technology</option>
+            </select>
+            <div class="text-red-500">{{ form.department.errors }}</div>
+          </div>
+
+          <!-- Batch -->
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-900">Batch</label>
+            <select id="batch" name="batch" required
+              class="bg-gray-50 p-2 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
+              <option selected disabled>Select</option>
+              <option value="SP-25">SP-25</option>
+              <option value="FA-25">FA-25</option>
+              <option value="SP-24">SP-24</option>
+            </select>
+            <div class="text-red-500">{{ form.batch.errors }}</div>
+          </div>
+
+          <!-- Address -->
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-900">Address</label>
+            <input type="text" placeholder="Robotics Lab Old Building" name="address" id="address" value="{{ form.address.value|default_if_none:'' }}" required
+              class="bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
+            <div class="text-red-500">{{ form.address.errors }}</div>
+          </div>
+
+          <!-- Joining Date -->
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-900">Joining Date</label>
+            <input type="date" name="joining_date" id="joining_date" value="{{ form.joining_date.value|default_if_none:'' }}" required
+              class="bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
+            <div class="text-red-500">{{ form.joining_date.errors }}</div>
+          </div>
+
+        </div>
+
+        <!-- Submit Button -->
+        <button type="button" id="checkButton" class="w-full rounded-xl bg-gray-600 text-white font-bold text-lg py-3 border hover:bg-blue-600">
+          Submit Application
+        </button>
+        <button type="submit" id="hiddenSubmitButton" style="display: none;"></button>
+      </form>
+    </main>
+  </section>
+
+  <!-- JavaScript Logic for Form Handling -->
+  <script>
+    // CNIC Formatting Function
+    const cnicInput = document.getElementById('cnicInput');
+    cnicInput.addEventListener('input', () => {
+      let formattedCNIC = cnicInput.value.replace(/\D/g, '');
+      if (formattedCNIC.length > 5) formattedCNIC = formattedCNIC.slice(0, 5) + '-' + formattedCNIC.slice(5);
+      if (formattedCNIC.length > 13) formattedCNIC = formattedCNIC.slice(0, 13) + '-' + formattedCNIC.slice(13);
+      cnicInput.value = formattedCNIC.slice(0, 15);
+    });
+
+    // Phone Number Validation
+    const phoneInput = document.getElementById('phoneInput');
+    phoneInput.addEventListener('input', () => {
+      phoneInput.value = phoneInput.value.replace(/\D/g, '').slice(0, 11);
+    });
+
+    // Concatenate Registration Number
+    function formatBatchYear(input) {
+      const batchYear = input.value.toUpperCase();
+      document.getElementById('reg_num_concat').value = `${batchYear}-${document.getElementById('dept_degree').value}-${document.getElementById('roll_num').value}`;
+    }
+
+    function formatRollNumber(input) {
+      const rollNumber = input.value;
+      document.getElementById('reg_num_concat').value = `${document.getElementById('batch_year').value}-${document.getElementById('dept_degree').value}-${rollNumber}`;
+    }
+
+    // Submit Handler
+    document.getElementById('checkButton').addEventListener('click', function() {
+      // Perform validation here if needed
+
+      // Trigger hidden submit button
+      document.getElementById('hiddenSubmitButton').click();
+    });
+  </script>
+</body>
+</html>

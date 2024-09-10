@@ -22,6 +22,7 @@
   <section class="h-screen w-3/4 p-5 absolute inset-y-0 right-0">
     {% include "Dashboard/admin_header.html" %}
     <main class="mt-5 text-black bg-white rounded-xl border border-gray-300 px-5 py-10">
+
       <h1 class="mt-5 font-bold text-center text-4xl text-gray-800 mb-8">Add New Product</h1>
       <hr class="my-10 border border-gray-300" />
 
@@ -38,6 +39,15 @@
               <option value="sensor">Sensor</option>
               <option value="soldering">Soldering</option>
               <option value="tools">Tools</option>
+              <option value="motor_drivers">Motor Drivers</option>
+              <option value="communication_modules">Communication Modules</option>
+              <option value="power_and_charging">Power and Charging</option>
+              <option value="displays_and_interfaces">Displays and Interfaces</option>
+              <option value="wiring_and_connectors">Wiring and Connectors</option>
+              <option value="robotics_and_drones">Robotics and Drones</option>
+              <option value="miscellaneous">Miscellaneous</option>
+              <option value="others">Others</option>
+              
             </select>
           </div>
 
@@ -100,10 +110,124 @@
       const modelSelect = document.getElementById('model');
 
       const models = {
-        'micro-controller': ['ESP8266', 'Arduino UNO', 'Arduino Nano'],
-        'sensor': ['Ultrasonic Sensor', 'Infrared Sensor', 'Temperature Sensor'],
-        'soldering': ['Soldering Iron', 'Soldering Wire', 'Soldering Station'],
-        'tools': ['Multimeter', 'Oscilloscope', 'Power Supply']
+        'micro-controller': ['ESP8266', 'Arduino UNO', 'Arduino Nano', 'Arduino Mega', 'ESP32' ,'Rasberry Pi 5', 'Pro Micro',"ESP8266"],
+    'sensor': [
+        'Ultrasonic Sensor',
+        'GPS Module',
+        'IR Sensor',
+        'Sharp IR',
+        'Color Sensor',
+        'Water Sensor',
+        'Heart Rate Sensor',
+        'Soil Moisture Sensor',
+        'MQ2 Sensor',
+        'DHT22',
+        'IR Array',
+        'QTR Array',
+        'Temperature Sensor'
+    ],
+    'soldering': ['Soldering Iron', 'Soldering Wire', 'Soldering Station'],
+    'tools': [
+        'Multimeter',
+        'Oscilloscope',
+        'Power Supply',
+        'Small Drills',
+        'Medium Drill',
+        'Hammer',
+        'Nose Pliers Small',
+        'Pliers',
+        'Wire Stripper Orange',
+        'Wire Clump Yellow',
+        'Medium Wire Cutter',
+        'Green Wire Cutter + Stripper',
+        'Blue Wire Cutter',
+        'Tweezer',
+        'Sucker',
+        'Grinder',
+        'Drill Big',
+        'Level Tool',
+        'Clamp Meter'
+    ],
+    'motor_drivers': [
+        'L293 Motor Driver Shield',
+        'L298 Motor Driver',
+        'IBT 2 Motor Driver Without ICs',
+        'IBT 2 Motor Driver With ICs',
+        'Stepper Motor Driver'
+    ],
+    'communication_modules': [
+        'RF Module Sets',
+        'Bluetooth Module',
+        'RF Module Low Frequency Set',
+        'RF Card Reader',
+        'FTDI Module'
+    ],
+    'power_and_charging': [
+        '9 Volt Batteries',
+        '3 Volt Cells',
+        'Lipo Chargers',
+        'Buck Converter',
+        'Boost Converter'
+    ],
+    'displays_and_interfaces': [
+        'LCD',
+        '7 Segment Module',
+        'VGA to HDMI Converter',
+        'Level Converter'
+    ],
+    'wiring_and_connectors': [
+        'Long Blue Wires Arduino',
+        'Small Blue Wires Arduino',
+        'Extensions USB Long',
+        'Extensions USB Small'
+    ],
+    'robotics_and_drones': {
+        'drone_components': [
+            'Drone Controller FS-16 Radio',
+            'Telemetry Drone',
+            'ESCs Drone',
+            'Flight Controller Drone',
+            'FPV Camera Drone',
+            'Drone Kit',
+            'Drone GPS Module'
+        ],
+        'motors_and_actuators': [
+            'DC Motor Yellow',
+            'Polulo DC Motors',
+            'Encoder Motors Small',
+            'Servo Large',
+            'Servo Small',
+            'Polulo Motors Medium'
+        ],
+        'wheels_and_tyres': [
+            'Yellow Tyres',
+            'Polulo Tyres',
+            'Sumo Tyres',
+            'Macnum Wheels'
+        ],
+        'accessories': ['IR China Imported']
+    },
+    'miscellaneous': [
+        'Logic Probe',
+        'Battery Checker',
+        'Buzzer',
+        'Keypad',
+        'Relay Module',
+        'Bobs',
+        'Medium Buzzer'
+    ],
+
+    'others': [
+    'PC',
+    'Printer',
+    'LCD Desktop',
+    'KeyBoard',
+    'Mouse',
+    'HDMI to VGA',
+    'VGA to HDMI',
+    'HDMI Cable',
+    'Power Cable',
+]
       };
 
       categorySelect.addEventListener('change', (event) => {

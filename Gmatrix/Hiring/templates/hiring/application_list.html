@@ -1,0 +1,241 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="https://i.ibb.co/RST4HvR/Untitled-design.png" />
+  <title>Member Applications - Gmatrix</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.js"></script>
+  {% tailwind_css %}
+  <style>
+    .dialog-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.3);
+        z-index: 999;
+    }
+    .dialog {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        width: 350px;
+        text-align: center;
+    }
+    .table-container {
+        max-height: 500px;
+        overflow-y: auto;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+    }
+    table {
+        min-width: 100%;
+        border-collapse: collapse;
+        border-radius: 0.5rem;
+        overflow: hidden;
+    }
+    th, td {
+        text-align: left;
+        padding: 12px;
+    }
+    th {
+        background-color: #d1d5db;
+        color: #6B7280; 
+        border-bottom: 2px solid #e2e8f0;
+    }
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+    tr:hover {
+        background-color: #f1f5f9;
+    }
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    .pagination a, .pagination span {
+        margin: 0 5px;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        text-decoration: none;
+        color: #1f2937;
+    }
+    .pagination a:hover {
+        background-color: #f1f5f9;
+    }
+    .pagination .current {
+        background-color: #3b82f6;
+        color: white;
+        border: 1px solid #3b82f6;
+    }
+  </style>
+</head>
+<body class="flex bg-gray-100">
+  <aside class="h-screen w-1/4 p-5 fixed">
+    {% include "Dashboard/admin_nav.html" %}
+  </aside>
+  <section class="h-screen w-3/4 p-5 absolute inset-y-0 right-0">
+    {% include "Dashboard/admin_header.html" %}
+    <main class="mt-5 text-black bg-white rounded-xl border border-gray-300 px-5 py-10">
+      <h1 class="mt-5 font-bold text-center text-4xl text-gray-800 mb-8">Member Applications</h1>
+      <hr class="my-10 border border-gray-300" />
+
+      <!-- Filter Options -->
+      <div class="w-1/2 mx-auto mb-5">
+        <form id="filter-form" method="GET">
+          <select id="filter" name="filter" class="bg-gray-50 p-2 mt-5 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
+            <option value="all" {% if filter_option == 'all' %}selected{% endif %}>All Applications</option>
+            <option value="shortlisted" {% if filter_option == 'shortlisted' %}selected{% endif %}>Shortlisted</option>
+          </select>
+        </form>
+      </div>
+
+      <hr class="my-10 border border-gray-300" />
+      <!-- Table to display member applications -->
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col" class="text-center text-sm">ID</th>
+              <th scope="col" class="text-center text-sm">Name</th>
+              <th scope="col" class="text-center text-sm">Phone</th>
+              <th scope="col" class="text-center text-sm">Registration No</th>
+              <th scope="col" class="text-center text-sm">Department</th>
+              <th scope="col" class="text-center text-sm">Batch</th>
+              <th scope="col" class="text-center text-sm">Joining Date</th>
+              <th scope="col" class="text-center text-sm">Status</th>
+              <th scope="col" class="text-center text-sm">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for application in page_obj %}
+              <tr>
+                <td class="text-gray-700 text-sm text-center">{{ application.id }}</td>
+                <td class="text-gray-700 text-sm text-center">{{ application.name }}</td>
+                <td class="text-gray-700 text-sm text-center">{{ application.phone_no }}</td>
+                <td class="text-gray-700 text-sm text-center">{{ application.reg_num }}</td>
+                <td class="text-gray-700 text-sm text-center">{{ application.department }}</td>
+                <td class="text-gray-700 text-sm text-center">{{ application.batch }}</td>
+                <td class="text-gray-700 text-sm text-center">{{ application.joining_date }}</td>
+                <td class="text-gray-700 text-sm text-center">
+                  {% if application.is_shortlisted %}
+                    Shortlisted
+                  {% else %}
+                    Not Shortlisted
+                  {% endif %}
+                </td>
+                <td class="text-center">
+                  {% if not application.is_shortlisted %}
+                  <button
+                  class="bg-blue-500 text-white hover:bg-blue-600 focus:outline-none rounded-full px-4 py-2 flex items-center space-x-2"
+                  onclick="shortlistApplication('{{ application.id }}')"
+                >
+                  <i class="fa-solid fa-check"></i>
+                </button>
+                  {% endif %}
+                </td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td colspan="11" class="text-center text-gray-500">No applications available.</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+{% if request.GET.success %}
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    Toastify({
+      text: "Member shortlisted successfully.",
+      textcolor: "gray",
+      duration: 3000,
+      backgroundColor: "green",
+    }).showToast();
+  });
+</script>
+{% endif %}
+
+      <!-- Pagination Controls -->
+      <div class="pagination">
+        {% if page_obj.has_previous %}
+          <a href="?page=1&filter={{ filter_option }}">&laquo; First</a>
+          <a href="?page={{ page_obj.previous_page_number }}&filter={{ filter_option }}">Previous</a>
+        {% else %}
+          <span>&laquo; First</span>
+          <span>Previous</span>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+          {% if page_obj.number == num %}
+            <span class="current">{{ num }}</span>
+          {% else %}
+            <a href="?page={{ num }}&filter={{ filter_option }}">{{ num }}</a>
+          {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+          <a href="?page={{ page_obj.next_page_number }}&filter={{ filter_option }}">Next</a>
+          <a href="?page={{ page_obj.paginator.num_pages }}&filter={{ filter_option }}">Last &raquo;</a>
+        {% else %}
+          <span>Next</span>
+          <span>Last &raquo;</span>
+        {% endif %}
+      </div>
+
+    </main>
+  </section>
+
+  <!-- Confirmation Dialog -->
+  <div id="dialog-overlay" class="dialog-overlay"></div>
+  <div id="dialog" class="dialog">
+    <p class="text-lg mb-4">Are you sure you want to shortlist this application?</p>
+    <form id="shortlist-form" method="POST">
+      {% csrf_token %}
+      <div class="flex justify-center gap-4">
+        <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-lg">Confirm</button>
+        <button type="button" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg" onclick="hideConfirmDialog()">Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('filter').addEventListener('change', function() {
+        document.getElementById('filter-form').submit();
+    });
+
+    function shortlistApplication(applicationId) {
+      if (applicationId) {
+        document.getElementById('dialog').style.display = 'block';
+        document.getElementById('dialog-overlay').style.display = 'block';
+        document.getElementById('shortlist-form').action = `/applications/shortlist/${applicationId}/`;
+      } else {
+        console.error("Invalid application ID");
+      }
+    }
+
+    function hideConfirmDialog() {
+      document.getElementById('dialog').style.display = 'none';
+      document.getElementById('dialog-overlay').style.display = 'none';
+    }
+  </script>
+</body>
+</html>

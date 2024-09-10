@@ -11,6 +11,7 @@ from django.http import HttpResponse
 from .forms import ComponentIssueForm
 from .models import ComponentIssue
 from django.core.paginator import Paginator
+from django.shortcuts import get_object_or_404
 
 
 def inventory_dashboard(request):
@@ -66,6 +67,7 @@ def add_product(request):
         form = ProductForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Product Added successfully!')
             return redirect('inventory_view') 
     else:
         form = ProductForm()
@@ -88,3 +90,45 @@ class ProductList(APIView):
             products = products.filter(model__icontains=search_term)
         serializer = ProductSerializer(products, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+
+def view_products(request):
+    category = request.GET.get('category', '')
+    status = request.GET.get('status', '')
+    search_query = request.GET.get('search', '')
+    products = Product.objects.all()
+    if category:
+        products = products.filter(category=category)
+    if status:
+        products = products.filter(status=status)
+    if search_query:
+        products = products.filter(model__icontains=search_query)
+    products = products.order_by('id')
+    paginator = Paginator(products, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'Inventory/view_inventory.html', {'page_obj': page_obj})
+
+
+def update_product(request, product_id):
+    product = get_object_or_404(Product, pk=product_id)
+    if request.method == 'POST':
+        form = ProductForm(request.POST, instance=product)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Product updated successfully!')
+            return redirect('view_products') 
+    else:
+        form = ProductForm(instance=product)
+    return render(request, 'Inventory/edit_product.html', {'form': form, 'product': product})
+
+
+def delete_product(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    if request.method == 'POST':
+        product.delete()
+        messages.success(request, 'Product deleted successfully!')
+        return redirect('view_products')
+    return render(request, 'Inventory/view_inventory.html')

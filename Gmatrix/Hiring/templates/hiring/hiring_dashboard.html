@@ -1,0 +1,102 @@
+{% load static %}
+{% load tailwind_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="https://i.ibb.co/RST4HvR/Untitled-design.png" />
+    <title>Inventory -Gmatrix</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    {% tailwind_css %}
+    <style>
+        .dashboard-container {
+            max-width: 1200px;
+        }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        .card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            text-align: center;
+            transition: box-shadow 0.3s, transform 0.3s;
+        }
+        .card:hover {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            transform: translateY(-5px);
+        }
+        .card-icon {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #3B82F6;
+        }
+        .card-count {
+            font-size: 20px;
+            font-weight: 600;
+            color: #6B7280;
+        }
+    </style>
+</head>
+<body class="flex bg-gray-100">
+    <aside class="h-screen w-1/4 p-5 fixed">
+      {% include "Dashboard/admin_nav.html" %}
+    </aside>
+    <section class="h-screen w-3/4 p-5 absolute inset-y-0 right-0">
+      {% include "Dashboard/admin_header.html" %}
+
+    <div class="card-grid mt-5">
+        <div class="card">
+            <p class="card-icon" >{{ total_applications }}</p>
+            <p class="card-count">Applications</p>
+        </div>
+        <div class="card">
+            <p class="card-icon" >{{ shortlisted_applications }}</p>
+            <p class="card-count">Shortlisted</p>
+        </div>
+        <div class="card">
+            <p class="card-icon" >0</p>
+            <p class="card-count">Selected</p>
+        </div>
+        
+    </div>
+    
+    <main class="dashboard-container mt-5 py-5 px-10 bg-white rounded-xl border border-gray-300 shadow-md">
+    
+
+        <div class="card-grid mt-5">
+
+            <div class="card">
+                <a href="{% url 'submit_application' %}" class="text-white bg-blue-500 hover:bg-blue-600 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2">
+                    <p class="px-2">Apply Now</p>
+                    <svg class="w-5 h-5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                    </svg>
+                </a>
+            </div>
+
+            <div class="card">
+                <a href="{% url 'application_list'%}" class="text-white bg-blue-500 hover:bg-blue-600 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2">
+                    <p class="px-2">All Applications</p>
+                    <svg class="w-5 h-5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                    </svg>
+                </a>
+            </div>
+
+
+           
+        </div>
+    </main>
+  
+
+</body>
+</html>

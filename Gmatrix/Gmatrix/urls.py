@@ -10,6 +10,7 @@ urlpatterns = [
     path('', include('Inventory.urls')),
     path('', include('Members.urls')),
     path('', include('Documentation.urls')),
+    path('', include('Hiring.urls')),
   
 
     path("__reload__/", include("django_browser_reload.urls")),

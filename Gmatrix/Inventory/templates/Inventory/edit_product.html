@@ -6,7 +6,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="https://i.ibb.co/RST4HvR/Untitled-design.png" />
-  <title>Edit Item -Gmatrix</title>
+  <title>Add Item - Gmatrix</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
   <script src="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.js"></script>
@@ -25,101 +25,58 @@
       <h1 class="mt-5 font-bold text-center text-4xl text-gray-800 mb-8">Add New Product</h1>
       <hr class="my-10 border border-gray-300" />
 
-      <form id="productForm" action="{% url 'product_add' %}" method="POST">
+      <form id="productForm" action="{% url 'update_product' product.id %}" method="POST">
         {% csrf_token %}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
-
           <div class="col-span-1">
             <label class="block mb-2 text-sm font-medium text-gray-900">Category</label>
-            <select name="category" id="category" 
-              class="bg-gray-50 p-2 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
-              <option value="" disabled selected>Select Category</option>
-              <option value="micro-controller">Micro-Controller</option>
-              <option value="sensor">Sensor</option>
-              <option value="soldering">Soldering</option>
-              <option value="tools">Tools</option>
-            </select>
+            <input type="text" name="category" value="{{ product.category }}" 
+              class="bg-gray-50 p-2 border border-gray-300 text-gray-900 text-sm rounded-lg w-full" />
           </div>
-
 
           <div class="col-span-1">
             <label class="block mb-2 text-sm font-medium text-gray-900">Model</label>
-            <select name="model" id="model" 
-              class="bg-gray-50 p-2 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
-
-            </select>
+            <input type="text" name="model" value="{{ product.model }}" 
+              class="bg-gray-50 p-2 border border-gray-300 text-gray-900 text-sm rounded-lg w-full" />
           </div>
-
 
           <div class="col-span-1">
             <label class="block mb-2 text-sm font-medium text-gray-900">Status</label>
             <select name="status" id="status" 
               class="bg-gray-50 p-2 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
-              <option value="" disabled selected>Select Status</option>
-              <option value="working">Working</option>
-              <option value="damage">Damage</option>
-              <option value="out_of_stock">Out of Stock</option>
+              <option value="" disabled>Select Status</option>
+              <option value="working" {% if product.status == 'working' %}selected{% endif %}>Working</option>
+              <option value="damage" {% if product.status == 'damage' %}selected{% endif %}>Damage</option>
+              <option value="out_of_stock" {% if product.status == 'out_of_stock' %}selected{% endif %}>Out of Stock</option>
             </select>
           </div>
 
-
           <div class="col-span-1">
             <label class="block mb-2 text-sm font-medium text-gray-900">Quantity</label>
-            <input type="number" name="quantity" min="1" 
+            <input type="number" name="quantity" min="1" value="{{ product.quantity }}" 
               class="bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
           </div>
-
 
           <div class="col-span-1">
             <label class="block mb-2 text-sm font-medium text-gray-900">Purchase Date</label>
-            <input type="date" name="purchase_date" 
+            <input type="date" name="purchase_date" value="{{ product.purchase_date|date:'Y-m-d' }}" 
               class="bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
           </div>
-
 
           <div class="col-span-1">
             <label class="block mb-2 text-sm font-medium text-gray-900">Price</label>
-            <input type="number" name="price" min="0" step="0.01" 
+            <input type="number" name="price" min="0" step="0.01" value="{{ product.price }}" 
               class="bg-gray-50 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
           </div>
 
-
           <div class="col-span-1 md:col-span-2">
             <button type="submit" id="submitButton" class="w-full mt-6 rounded-xl bg-gray-600 text-white font-bold text-lg py-3 border hover:bg-blue-600">
-              Updated Product
+              Update Product
             </button>
           </div>
         </div>
       </form>
     </main>
   </section>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const categorySelect = document.getElementById('category');
-      const modelSelect = document.getElementById('model');
-
-      const models = {
-        'micro-controller': ['ESP8266', 'Arduino UNO', 'Arduino Nano'],
-        'sensor': ['Ultrasonic Sensor', 'Infrared Sensor', 'Temperature Sensor'],
-        'soldering': ['Soldering Iron', 'Soldering Wire', 'Soldering Station'],
-        'tools': ['Multimeter', 'Oscilloscope', 'Power Supply']
-      };
-
-      categorySelect.addEventListener('change', (event) => {
-        const selectedCategory = event.target.value;
-        const modelOptions = models[selectedCategory] || [];
-        
-        modelSelect.innerHTML = '<option value="" disabled selected>Select Model</option>';
-        modelOptions.forEach(model => {
-          const option = document.createElement('option');
-          option.value = model;
-          option.textContent = model;
-          modelSelect.appendChild(option);
-        });
-      });
-    });
-  </script>
-
 </body>
 </html>

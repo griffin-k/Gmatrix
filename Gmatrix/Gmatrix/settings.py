@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'Inventory',
     'Members',
     'Documentation',
+    'Hiring',
 
     'rest_framework',
     

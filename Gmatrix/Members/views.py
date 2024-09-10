@@ -197,7 +197,7 @@ def members_register(request):
         form = MemberForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect(f"{reverse('members_view')}?success=true")  
+            return redirect(f"{reverse('members_register')}?success=true")  
         else:
             print(form.errors)
     else:

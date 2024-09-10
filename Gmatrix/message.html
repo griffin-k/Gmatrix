@@ -1,0 +1,38 @@
+{% if messages %}
+<div class="mb-6">
+  {% for message in messages %}
+    <div class="p-4 mb-4 text-sm text-white {{ message.tags }} bg-green-500 rounded-lg" role="alert">
+      {{ message }}
+    </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+
+
+
+
+
+messages.success(request, 'Product Added successfully!')
+
+
+
+
+
+{% if request.GET.success %}
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    Toastify({
+      text: "Member registered successfully.",
+      textcolor: "gray",
+      duration: 3000,
+      backgroundColor: "green",
+    }).showToast();
+  });
+</script>
+{% endif %}
+
+
+
+
+redirect(f"{reverse('members_register')}?success=true")  
