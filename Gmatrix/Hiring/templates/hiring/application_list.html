@@ -12,78 +12,78 @@
   {% tailwind_css %}
   <style>
     .dialog-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.3);
-        z-index: 999;
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.3);
+      z-index: 999;
     }
     .dialog {
-        display: none;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: white;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        padding: 20px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        z-index: 1000;
-        width: 350px;
-        text-align: center;
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      width: 350px;
+      text-align: center;
     }
     .table-container {
-        max-height: 500px;
-        overflow-y: auto;
-        border-radius: 0.5rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        margin-top: 20px;
+      max-height: 500px;
+      overflow-y: auto;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin-top: 20px;
     }
     table {
-        min-width: 100%;
-        border-collapse: collapse;
-        border-radius: 0.5rem;
-        overflow: hidden;
+      min-width: 100%;
+      border-collapse: collapse;
+      border-radius: 0.5rem;
+      overflow: hidden;
     }
     th, td {
-        text-align: left;
-        padding: 12px;
+      text-align: left;
+      padding: 12px;
     }
     th {
-        background-color: #d1d5db;
-        color: #6B7280; 
-        border-bottom: 2px solid #e2e8f0;
+      background-color: #d1d5db;
+      color: #6B7280; 
+      border-bottom: 2px solid #e2e8f0;
     }
     tr:nth-child(even) {
-        background-color: #f9f9f9;
+      background-color: #f9f9f9;
     }
     tr:hover {
-        background-color: #f1f5f9;
+      background-color: #f1f5f9;
     }
     .pagination {
-        display: flex;
-        justify-content: center;
-        margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
     }
     .pagination a, .pagination span {
-        margin: 0 5px;
-        padding: 8px 12px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        text-decoration: none;
-        color: #1f2937;
+      margin: 0 5px;
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      text-decoration: none;
+      color: #1f2937;
     }
     .pagination a:hover {
-        background-color: #f1f5f9;
+      background-color: #f1f5f9;
     }
     .pagination .current {
-        background-color: #3b82f6;
-        color: white;
-        border: 1px solid #3b82f6;
+      background-color: #3b82f6;
+      color: white;
+      border: 1px solid #3b82f6;
     }
   </style>
 </head>
@@ -103,11 +103,13 @@
           <select id="filter" name="filter" class="bg-gray-50 p-2 mt-5 placeholder-gray-400 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
             <option value="all" {% if filter_option == 'all' %}selected{% endif %}>All Applications</option>
             <option value="shortlisted" {% if filter_option == 'shortlisted' %}selected{% endif %}>Shortlisted</option>
+            <option value="selected" {% if filter_option == 'selected' %}selected{% endif %}>Selected</option>
           </select>
         </form>
       </div>
 
       <hr class="my-10 border border-gray-300" />
+
       <!-- Table to display member applications -->
       <div class="table-container">
         <table>
@@ -135,44 +137,54 @@
                 <td class="text-gray-700 text-sm text-center">{{ application.batch }}</td>
                 <td class="text-gray-700 text-sm text-center">{{ application.joining_date }}</td>
                 <td class="text-gray-700 text-sm text-center">
-                  {% if application.is_shortlisted %}
+                  {% if application.is_selected %}
+                    Selected
+                  {% elif application.is_shortlisted %}
                     Shortlisted
                   {% else %}
-                    Not Shortlisted
+                    Pending
                   {% endif %}
                 </td>
                 <td class="text-center">
                   {% if not application.is_shortlisted %}
-                  <button
-                  class="bg-blue-500 text-white hover:bg-blue-600 focus:outline-none rounded-full px-4 py-2 flex items-center space-x-2"
-                  onclick="shortlistApplication('{{ application.id }}')"
-                >
-                  <i class="fa-solid fa-check"></i>
-                </button>
+                    <button
+                      class="bg-blue-500 text-white hover:bg-blue-600 focus:outline-none rounded-full px-4 py-2 flex items-center space-x-2"
+                      onclick="shortlistApplication('{{ application.id }}')"
+                    >
+                      Shortlist
+                    </button>
+                  {% elif not application.is_selected %}
+                    <button
+                      class="bg-green-500 text-white hover:bg-green-600 focus:outline-none rounded-full px-4 py-2 flex items-center space-x-2"
+                      onclick="selectApplication('{{ application.id }}')"
+                    >
+                      Select
+                    </button>
                   {% endif %}
                 </td>
               </tr>
             {% empty %}
               <tr>
-                <td colspan="11" class="text-center text-gray-500">No applications available.</td>
+                <td colspan="9" class="text-center text-gray-500">No applications available.</td>
               </tr>
             {% endfor %}
           </tbody>
         </table>
       </div>
 
-{% if request.GET.success %}
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    Toastify({
-      text: "Member shortlisted successfully.",
-      textcolor: "gray",
-      duration: 3000,
-      backgroundColor: "green",
-    }).showToast();
-  });
-</script>
-{% endif %}
+      <!-- Toastify Notification -->
+      {% if request.GET.success %}
+      <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          Toastify({
+            text: "Member status updated successfully.",
+            textcolor: "gray",
+            duration: 3000,
+            backgroundColor: "green",
+          }).showToast();
+        });
+      </script>
+      {% endif %}
 
       <!-- Pagination Controls -->
       <div class="pagination">
@@ -207,19 +219,17 @@
   <!-- Confirmation Dialog -->
   <div id="dialog-overlay" class="dialog-overlay"></div>
   <div id="dialog" class="dialog">
-    <p class="text-lg mb-4">Are you sure you want to shortlist this application?</p>
+    <p>Are you sure you want to proceed?</p>
     <form id="shortlist-form" method="POST">
       {% csrf_token %}
-      <div class="flex justify-center gap-4">
-        <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-lg">Confirm</button>
-        <button type="button" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg" onclick="hideConfirmDialog()">Cancel</button>
-      </div>
+      <button type="submit" class="bg-blue-500 text-white hover:bg-blue-600 px-4 py-2 rounded-full">Confirm</button>
+      <button type="button" class="bg-gray-500 text-white hover:bg-gray-600 px-4 py-2 rounded-full" onclick="closeDialog()">Cancel</button>
     </form>
   </div>
 
   <script>
     document.getElementById('filter').addEventListener('change', function() {
-        document.getElementById('filter-form').submit();
+      document.getElementById('filter-form').submit();
     });
 
     function shortlistApplication(applicationId) {
@@ -232,7 +242,17 @@
       }
     }
 
-    function hideConfirmDialog() {
+    function selectApplication(applicationId) {
+      if (applicationId) {
+        document.getElementById('dialog').style.display = 'block';
+        document.getElementById('dialog-overlay').style.display = 'block';
+        document.getElementById('shortlist-form').action = `/applications/select/${applicationId}/`;
+      } else {
+        console.error("Invalid application ID");
+      }
+    }
+
+    function closeDialog() {
       document.getElementById('dialog').style.display = 'none';
       document.getElementById('dialog-overlay').style.display = 'none';
     }
