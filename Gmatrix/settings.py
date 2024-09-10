@@ -33,11 +33,20 @@ SECRET_KEY = 'django-insecure-)aki03jxe30any-z5g3p0i3o0k!^((qf7%%2$%&l+ur_1i+337
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['6ea3-39-62-3-210.ngrok-free.app', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['.vercel.app', '.now.sh']
 CSRF_TRUSTED_ORIGINS = [
-    'https://6ea3-39-62-3-210.ngrok-free.app',
+
 ]
 
+
+
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),  # Assuming you have a 'static' folder in your project root
+]
 
 
 TAILWIND_APP_NAME = 'theme'

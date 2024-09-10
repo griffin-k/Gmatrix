@@ -1,0 +1,30 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "Gmatrix/wsgi.py",
+        "use": "@vercel/python",
+        "config": {
+          "runtime": "python3.9"
+        }
+      },
+      {
+        "src": "build_files.sh",
+        "use": "@vercel/static-build",
+        "config": {
+          "distDir": "staticfiles_build"
+        }
+      }
+    ],
+    "routes": [
+      {
+        "src": "/static/(.*)",
+        "dest": "/staticfiles_build/$1"
+      },
+      {
+        "src": "/(.*)",
+        "dest": "Gmatrix/wsgi.py"
+      }
+    ]
+  }
+  

@@ -1,0 +1,6 @@
+PyPDF2
+reportlab
+datetime
+csv
+rest_framework
+serializers
