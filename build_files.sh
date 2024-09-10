@@ -7,9 +7,6 @@ echo "Starting build process with Python 3.9..."
 echo "Installing dependencies using Python 3.9..."
 python3.9 -m pip install -r requirements.txt
 
-# Step 2: Collect static files
-echo "Collecting static files..."
-python3.9 -m manage collectstatic --noinput
 
 # Step 3: Apply database migrations
 echo "Applying database migrations..."
