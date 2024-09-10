@@ -1,7 +1,4 @@
+Django==3.2
+djangorestframework
 PyPDF2
 reportlab
-datetime
-csv
-rest_framework
-serializers
-Django===3.2
