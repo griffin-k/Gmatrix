@@ -2,3 +2,4 @@ Django==3.2
 djangorestframework
 PyPDF2
 reportlab
+django_browser_reload
