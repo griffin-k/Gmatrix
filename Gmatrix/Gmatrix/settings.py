@@ -33,7 +33,11 @@ SECRET_KEY = 'django-insecure-)aki03jxe30any-z5g3p0i3o0k!^((qf7%%2$%&l+ur_1i+337
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['d028-119-155-196-151.ngrok-free.app', 'localhost', '127.0.0.1']
+CSRF_TRUSTED_ORIGINS = [
+    'https://d028-119-155-196-151.ngrok-free.app',
+]
+
 
 
 TAILWIND_APP_NAME = 'theme'

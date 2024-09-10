@@ -241,9 +241,9 @@
     <script>
         async function fetchData() {
             try {
-                const attendanceResponse = await fetch('http://127.0.0.1:8000/attendances/');
+                const attendanceResponse = await fetch('/attendances/');
                 const attendanceData = await attendanceResponse.json();
-                const membersResponse = await fetch('http://127.0.0.1:8000/members_api/');
+                const membersResponse = await fetch('/members_api/');
                 const membersData = await membersResponse.json();
                 const today = new Date();
                 const year = today.getFullYear();
