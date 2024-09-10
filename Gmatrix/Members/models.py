@@ -16,16 +16,24 @@ class Member(models.Model):
     ]
 
     DESIGNATION_CHOICES = [
-        ('President', 'President'),
-        ('Vice President', 'Vice President'),
-        ('General Secretary', 'General Secretary'),
-        ('Information Secretary', 'Information Secretary'),
-        ('Finance Secretary', 'Finance Secretary'),
-        ('Media Head', 'Media Head'),
-        ('Event Head', 'Event Head'),
-        ('Documentation Head', 'Documentation Head'),
-        ('Member', 'Member'),
-    ]
+    ('President', 'President'),
+    ('Vice President', 'Vice President'),
+    ('General Secretary', 'General Secretary'),
+    ('Information Secretary', 'Information Secretary'),
+    ('Finance Secretary', 'Finance Secretary'),
+    ('Media Head', 'Media Head'),
+    ('Event Head', 'Event Head'),
+    ('Documentation Head', 'Documentation Head'),
+    ('Member', 'Member'),
+    ('Core Member', 'Core Member'),
+    ('Lego Advisor', 'Lego Advisor'),
+    ('Graphic Designer', 'Graphic Designer'),
+    ('Technical Head', 'Technical Head'),
+    ('Assistant Technical Head', 'Assistant Technical Head'),
+    ('Secretary', 'Secretary'),
+    ('Treasurer', 'Treasurer'),
+]
+
 
     BATCH_CHOICES = [
         ('SP-25', 'SP-25'),

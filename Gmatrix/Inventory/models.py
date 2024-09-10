@@ -4,11 +4,19 @@ from django.db import models
 
 class Product(models.Model):
     CATEGORY_CHOICES = [
-        ('micro-controller', 'Micro-Controller'),
-        ('sensor', 'Sensor'),
-        ('soldering', 'Soldering'),
-        ('tools', 'Tools'),
-    ]
+    ('micro-controller', 'Micro-Controller'),
+    ('sensor', 'Sensor'),
+    ('soldering', 'Soldering'),
+    ('tools', 'Tools'),
+    ('motor_drivers', 'Motor Drivers'),
+    ('communication_modules', 'Communication Modules'),
+    ('power_and_charging', 'Power and Charging'),
+    ('displays_and_interfaces', 'Displays and Interfaces'),
+    ('wiring_and_connectors', 'Wiring and Connectors'),
+    ('robotics_and_drones', 'Robotics and Drones'),
+    ('miscellaneous', 'Miscellaneous'),
+    ('others', 'Others'),
+]
     
     STATUS_CHOICES = [
         ('working', 'Working'),
