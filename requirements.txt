@@ -4,3 +4,4 @@ datetime
 csv
 rest_framework
 serializers
+Django===3.2
