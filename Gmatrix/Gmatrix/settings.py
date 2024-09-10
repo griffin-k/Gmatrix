@@ -59,7 +59,6 @@ INSTALLED_APPS = [
 
     # 'django auto reload'
     'django_browser_reload',
-
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -82,6 +81,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # auto browser reloader 
     "django_browser_reload.middleware.BrowserReloadMiddleware",
+
 ]
 
 ROOT_URLCONF = 'Gmatrix.urls'
