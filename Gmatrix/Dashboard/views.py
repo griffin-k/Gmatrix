@@ -13,6 +13,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from Hiring.models  import MemberApplication
+import csv
 
 
 
@@ -136,7 +138,7 @@ def generate_Attendence(request):
         output_pdf.write(final_buffer)
         final_buffer.seek(0)
         response = HttpResponse(final_buffer, content_type='application/pdf')
-        response['Content-Disposition'] = 'attachment; filename="attendance_sheet.pdf"'
+        response['Content-Disposition'] = 'attachment; filename="Attendance_sheet.pdf"'
         return response
 
     except FileNotFoundError:
@@ -262,17 +264,40 @@ def student_body(request):
         final_buffer = BytesIO()
         output_pdf.write(final_buffer)
         final_buffer.seek(0)
-
-        # Prepare HTTP response
         response = HttpResponse(final_buffer, content_type='application/pdf')
-        response['Content-Disposition'] = 'attachment; filename="filtered_members_list.pdf"'
+        response['Content-Disposition'] = 'attachment; filename="Student_body.pdf"'
         return response
-
     except FileNotFoundError:
         return HttpResponse("Error: PDF template not found.", status=404)
     except Exception as e:
         return HttpResponse(f"Error processing PDF: {e}", status=500)
     
+
+
+
+
+
+
+
+
+def shortlisted_members_pdf(request):
+    shortlisted_members = MemberApplication.objects.filter(is_shortlisted=True)
+    if not shortlisted_members:
+        return HttpResponse("No shortlisted members found.", status=404)
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="Shortlisted_Member.csv"'
+    writer = csv.writer(response)
+    writer.writerow(['Sr No', 'Name', 'Phone No', 'Reg Num', 'Department', 'Batch'])
+    for idx, member in enumerate(shortlisted_members, start=1):
+        writer.writerow([
+            str(idx),
+            member.name,
+            member.phone_no,
+            member.reg_num,
+            member.department,
+            member.batch,
+        ])
+    return response
 
 
 

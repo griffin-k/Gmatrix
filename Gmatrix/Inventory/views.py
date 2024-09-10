@@ -18,7 +18,7 @@ def inventory_dashboard(request):
     return render(request, 'Inventory/inventory_dashboard.html')
 
 def view_inventory(request):
-    product_list = Product.objects.all()  
+    product_list = Product.objects.all().order_by('id')
     paginator = Paginator(product_list, 10) 
     page_number = request.GET.get('page')  
     page_obj = paginator.get_page(page_number)  

@@ -153,17 +153,29 @@
       </div>
 
       <div class="pagination">
-        <span class="pagination-info">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
-        <span class="pagination-controls">
-          {% if page_obj.has_previous %}
-            <a href="?{% if request.GET.category %}category={{ request.GET.category }}&{% endif %}{% if request.GET.status %}status={{ request.GET.status }}&{% endif %}{% if request.GET.search %}search={{ request.GET.search }}&{% endif %}page=1" class="pagination-link">First</a>
-            <a href="?{% if request.GET.category %}category={{ request.GET.category }}&{% endif %}{% if request.GET.status %}status={{ request.GET.status }}&{% endif %}{% if request.GET.search %}search={{ request.GET.search }}&{% endif %}page={{ page_obj.previous_page_number }}" class="pagination-link">Previous</a>
+        {% if page_obj.has_previous %}
+          <a href="?page=1">&laquo; First</a>
+          <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% else %}
+          <span>&laquo; First</span>
+          <span>Previous</span>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+          {% if page_obj.number == num %}
+            <span class="current">{{ num }}</span>
+          {% else %}
+            <a href="?page={{ num }}">{{ num }}</a>
           {% endif %}
-          {% if page_obj.has_next %}
-            <a href="?{% if request.GET.category %}category={{ request.GET.category }}&{% endif %}{% if request.GET.status %}status={{ request.GET.status }}&{% endif %}{% if request.GET.search %}search={{ request.GET.search }}&{% endif %}page={{ page_obj.next_page_number }}" class="pagination-link">Next</a>
-            <a href="?{% if request.GET.category %}category={{ request.GET.category }}&{% endif %}{% if request.GET.status %}status={{ request.GET.status }}&{% endif %}{% if request.GET.search %}search={{ request.GET.search }}&{% endif %}page={{ page_obj.paginator.num_pages }}" class="pagination-link">Last</a>
-          {% endif %}
-        </span>
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+          <a href="?page={{ page_obj.next_page_number }}">Next</a>
+          <a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+        {% else %}
+          <span>Next</span>
+          <span>Last &raquo;</span>
+        {% endif %}
       </div>
     </main>
   </section>
