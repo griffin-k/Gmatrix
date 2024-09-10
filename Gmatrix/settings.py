@@ -20,20 +20,14 @@ CSRF_TRUSTED_ORIGINS = [
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 STATIC_URL = '/static/'
-
-# Directory where static files will be collected
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
-
-# Additional directories to search for static files
 STATICFILES_DIRS = [
     BASE_DIR / "static",
     BASE_DIR / "theme/static",
 ]
 
-# Ensure proper file storage in production (e.g., with WhiteNoise)
-if not DEBUG:  # If in production mode
-    MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
 
 # Application definition
 INSTALLED_APPS = [
