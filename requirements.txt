@@ -3,3 +3,4 @@ djangorestframework
 PyPDF2
 reportlab
 django-browser-reload
+django-tailwind
