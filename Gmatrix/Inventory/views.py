@@ -18,13 +18,42 @@ def inventory_dashboard(request):
     return render(request, 'Inventory/inventory_dashboard.html')
 
 def view_inventory(request):
-    product_list = Product.objects.all().order_by('id')
-    paginator = Paginator(product_list, 10) 
-    page_number = request.GET.get('page')  
-    page_obj = paginator.get_page(page_number)  
+    # Retrieve filter parameters from the request
+    category_filter = request.GET.get('category', 'all')
+    status_filter = request.GET.get('status', 'all')
+    search_query = request.GET.get('search', '')
+
+    # Start with the base query
+    product_list = Product.objects.all()
+
+    # Apply category filter
+    if category_filter != 'all':
+        product_list = product_list.filter(category=category_filter)
+
+    # Apply status filter
+    if status_filter != 'all':
+        product_list = product_list.filter(status=status_filter)
+
+    # Apply search filter
+    if search_query:
+        product_list = product_list.filter(model__icontains=search_query)
+
+    # Order the products
+    product_list = product_list.order_by('id')
+
+    # Paginate the results
+    paginator = Paginator(product_list, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    # Prepare the context for rendering
     context = {
-        'page_obj': page_obj, 
+        'page_obj': page_obj,
+        'category_filter': category_filter,
+        'status_filter': status_filter,
+        'search_query': search_query,
     }
+
     return render(request, 'Inventory/view_inventory.html', context)
 
 
